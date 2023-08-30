@@ -52,7 +52,7 @@ func addPage(cmd *cobra.Command) {
 }
 
 func addFromDate(cmd *cobra.Command) {
-	cmd.PersistentFlags().StringVar(&FromDate, "from", "", "from")
+	cmd.PersistentFlags().StringVar(&FromDate, "from", "2000-01-01", "from")
 }
 
 func addToDate(cmd *cobra.Command) {
