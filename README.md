@@ -8,14 +8,20 @@ A command line utility to interact with the OpenAQ API.
 
 > The OpenAQ CLI tool is still a *work in progress* and may be unstable until a 1.0 release. 
 
+Compiled executables for Windows, Mac, Linux are available for download in the releases page: 
+https://github.com/openaq/openaq-cli/releases/
 
-With Golang > 1.18 installed run:
+After downloading place the exectuable where you keep exectuables and update you system `$PATH` variable to make the executable discoverable by your shell.
+
+---
+
+Alternatively you can install with Golang > 1.18 with:
 
 ```
 go install github.com/openaq/openaq-cli
 ```
 
-In future releases we will release pre-compiled executables for Windows, Mac and Linux.
+
 
 ## Usage
 
@@ -70,6 +76,8 @@ openaq countries list
 
 Provides a list of countries.
 
+---
+
 
 ```sh
 openaq countries get [countriesID]
@@ -88,7 +96,9 @@ Provides a help guide with commands
 
 
 locations
----
+--- 
+
+
 ```sh
 openaq locations list 
 ```
@@ -101,6 +111,7 @@ __flags__
 
 `--providers` - filter locations by one or more comma-delimited `providers ID` e.g. 1,2,3
 
+---
 
 ```sh
 openaq locations get [locationsID]
@@ -151,6 +162,10 @@ Provides a list of parameters.
 __flags__
 
 `--type` - filter parameters by `parameterType` either `pollutant` or `meteorological`
+
+
+---
+
 
 ```sh
 openaq parameters get [parametersID]
