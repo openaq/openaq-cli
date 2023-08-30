@@ -309,8 +309,8 @@ func writeMiniMeasurementsTable(measurements *openaq.MeasurementsResponse, heade
 	for _, s := range measurements.Results {
 		row := make(table.Row, 0, columns)
 		row = append(row, fmt.Sprintf("%s %s", s.Parameter.Name, s.Parameter.Units))
-		row = append(row, s.Period.DatetimeFrom.Local)
-		row = append(row, s.Period.DatetimeTo.UTC)
+		row = append(row, s.Period.DatetimeFrom.Local.Format(time.RFC3339))
+		row = append(row, s.Period.DatetimeTo.UTC.Format(time.RFC3339))
 		row = append(row, s.Period.Interval)
 		row = append(row, s.Value)
 		tw.AppendRow(row)
