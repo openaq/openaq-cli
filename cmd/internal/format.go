@@ -16,6 +16,7 @@ import (
 )
 
 var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "locations_count", "measurements_count", "providers_count"}
+var countriesMiniHeaders = []string{"countries_id", "iso_code", "name", "parameters"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
 var measurementsParametersHeaders = []string{"parameter_id", "parameter_name", "parameter_units", "parameter_display_name"}
 var measurementsPeriodHeaders = []string{"periodLabel", "periodInterval", "periodDatetimeFromUTC", "periodDatetimeFromLocal", "periodDatetimeToUTC", "periodDatetimeToLocal"}
@@ -37,7 +38,11 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 		case *openaq.LocationsResponse:
 			csvOut = writeLocationsCSV(v, locationsHeaders)
 		case *openaq.CountriesResponse:
-			csvOut = writeCountriesCSV(v, countriesHeaders)
+			if mini {
+				csvOut = writeMiniCountriesCSV(v, countriesMiniHeaders)
+			} else {
+				csvOut = writeCountriesCSV(v, countriesHeaders)
+			}
 		case *openaq.MeasurementsResponse:
 			csvOut = writeMeasurementsCSV(v, measurementsHeaders)
 		case *openaq.ParametersResponse:
@@ -72,7 +77,11 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 			return writeMeasurementsTable(v, measurementsHeaders)
 		}
 	case *openaq.CountriesResponse:
-		return writeCountriesTable(v, countriesHeaders)
+		if mini {
+			return writeMiniCountriesTable(v, countriesMiniHeaders)
+		} else {
+			return writeCountriesTable(v, countriesHeaders)
+		}
 	case *openaq.ParametersResponse:
 		return writeParametersTable(v, parametersHeaders)
 	default:
@@ -115,6 +124,25 @@ func writeCountriesCSV(countries *openaq.CountriesResponse, headers []string) st
 	return buf.String()
 }
 
+func writeMiniCountriesCSV(countries *openaq.CountriesResponse, headers []string) string {
+
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.Write(headers)
+
+	for _, s := range countries.Results {
+		var record []string
+		record = append(record, strconv.FormatInt(s.ID, 10))
+		record = append(record, s.Code)
+		record = append(record, s.Name)
+		record = append(record, "")
+		w.Write(record)
+
+	}
+	w.Flush()
+	return buf.String()
+}
+
 func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) string {
 	var columns = len(headers)
 	tw := table.NewWriter()
@@ -133,7 +161,20 @@ func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) 
 		tw.AppendRow(row)
 	}
 	return tw.Render()
-
+}
+func writeMiniCountriesTable(countries *openaq.CountriesResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range countries.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Code)
+		row = append(row, s.Name)
+		row = append(row, "")
+		tw.AppendRow(row)
+	}
+	return tw.Render()
 }
 
 // parameters
