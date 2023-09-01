@@ -76,6 +76,11 @@ openaq countries list
 
 Provides a list of countries.
 
+
+__flags__
+
+`--mini` -  provides a miniature/simplified version of the countries resource including only the countries ID, ISO code, name, and parameters
+
 ---
 
 
