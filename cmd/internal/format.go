@@ -84,6 +84,8 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 		}
 	case *openaq.ParametersResponse:
 		return writeParametersTable(v, parametersHeaders)
+	case *openaq.ProvidersResponse:
+		return writeProvidersTable(v, providersHeaders)
 	default:
 		return ""
 	}
@@ -198,6 +200,29 @@ func writeParametersCSV(parameters *openaq.ParametersResponse, headers []string)
 	}
 	w.Flush()
 	return buf.String()
+}
+
+func writeProvidersTable(countries *openaq.ProvidersResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range countries.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Name)
+		row = append(row, s.SourceName)
+		row = append(row, s.ExportPrefix)
+		row = append(row, s.License)
+		row = append(row, s.DatetimeAdded.Format(time.RFC3339))
+		row = append(row, s.DatetimeFirst.Format(time.RFC3339))
+		row = append(row, s.DatetimeLast.Format(time.RFC3339))
+		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
+		row = append(row, strconv.FormatInt(s.MeasurementsCount, 10))
+		row = append(row, strconv.FormatInt(s.CountriesCount, 10))
+		tw.AppendRow(row)
+	}
+	return tw.Render()
+
 }
 
 func writeProvidersCSV(providers *openaq.ProvidersResponse, headers []string) string {
