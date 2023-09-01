@@ -47,6 +47,7 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 	locationArgs.BaseArgs = baseArgs
 	var countries openaq.Countries
 	var providers openaq.Providers
+
 	countries_ids, err := flags.GetInt64Slice("countries")
 	if err != nil {
 		return nil, err
@@ -67,6 +68,17 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 		}
 		locationArgs.Providers = &providers
 	}
+
+	// isoCode, err := flags.GetString("iso")
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// fmt.Println(isoCode)
+	// if isoCode != "" {
+	// 	locationArgs.IsoCode = isoCode
+	// }
+	// fmt.Println(locationArgs.QueryParams())
+
 	return locationArgs, nil
 }
 

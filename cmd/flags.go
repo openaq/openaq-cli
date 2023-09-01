@@ -14,6 +14,7 @@ var FromDate string
 var ToDate string
 var PeriodName string
 var ParameterType string
+var IsoCode string
 
 var countriesIDs []int64
 var providersIDs []int64
@@ -65,4 +66,8 @@ func addPeriodName(cmd *cobra.Command) {
 
 func addMini(cmd *cobra.Command) {
 	cmd.PersistentFlags().BoolVar(&Mini, "mini", false, "mini")
+}
+
+func addIsoCode(cmd *cobra.Command) {
+	cmd.PersistentFlags().StringVar(&IsoCode, "iso", "", "Limit the results to a specific country using ISO 3166-1 alpha-2 code")
 }

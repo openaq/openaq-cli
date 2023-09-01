@@ -58,6 +58,7 @@ func init() {
 	addFormat(locations.LocationsCmd)
 	addCountries(locations.LocationsCmd)
 	addProviders(locations.LocationsCmd)
+	addIsoCode(locations.LocationsCmd)
 
 	addLimit(measurements.MeasurementsCmd)
 	addPage(measurements.MeasurementsCmd)
