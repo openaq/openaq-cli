@@ -48,6 +48,7 @@ func init() {
 	addLimit(countries.CountriesCmd)
 	addPage(countries.CountriesCmd)
 	addFormat(countries.CountriesCmd)
+	addMini(countries.CountriesCmd)
 
 	addLimit(locations.LocationsCmd)
 	addPage(locations.LocationsCmd)
