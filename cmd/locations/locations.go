@@ -69,15 +69,13 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 		locationArgs.Providers = &providers
 	}
 
-	// isoCode, err := flags.GetString("iso")
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// fmt.Println(isoCode)
-	// if isoCode != "" {
-	// 	locationArgs.IsoCode = isoCode
-	// }
-	// fmt.Println(locationArgs.QueryParams())
+	isoCode, err := flags.GetString("iso")
+	if err != nil {
+		return nil, err
+	}
+	if isoCode != "" {
+		locationArgs.IsoCode = isoCode
+	}
 
 	return locationArgs, nil
 }

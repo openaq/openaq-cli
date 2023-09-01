@@ -111,6 +111,8 @@ __flags__
 
 `--providers` - filter locations by one or more comma-delimited `providers ID` e.g. 1,2,3
 
+`--iso` - Filter the results to a specific country using ISO 3166-1 alpha-2 code
+
 ---
 
 ```sh
