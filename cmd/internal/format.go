@@ -17,13 +17,14 @@ import (
 
 var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "locations_count", "measurements_count", "providers_count"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
-var parametersHeaders = []string{"parameters_id", "name", "display_name", "units", "description", "locations_count", "measurements_count"}
 var measurementsParametersHeaders = []string{"parameter_id", "parameter_name", "parameter_units", "parameter_display_name"}
 var measurementsPeriodHeaders = []string{"periodLabel", "periodInterval", "periodDatetimeFromUTC", "periodDatetimeFromLocal", "periodDatetimeToUTC", "periodDatetimeToLocal"}
 var measurementsCoverageHeaders = []string{"expectedCount", "expectedInterval", "observedCount", "observedInterval", "percentComplete", "percentCoverage", "datetimeFromUTC", "datetimeFromLocal", "datetimeToUTC", "datetimeToLocal"}
 var measurementsSummaryHeaders = []string{"min", "q02", "q25", "median", "q75", "q98", "max", "sd"}
 var measurementsHeaders = appendMany([][]string{measurementsParametersHeaders, {"value"}, measurementsPeriodHeaders, measurementsCoverageHeaders, measurementsSummaryHeaders})
 var miniMeasurementsHeaders = []string{"parameter", "datetime_local", "datetime_utc", "period", "value"}
+var parametersHeaders = []string{"parameters_id", "name", "display_name", "units", "description", "locations_count", "measurements_count"}
+var providersHeaders = []string{"providers_id", "name", "source_name", "export_prefix", "license", "datetime_added", "datetime_first", "datetime_last", "locations_count", "measurements_count", "countries_count"}
 
 func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 	jsonFlag, _ := flags.GetBool("json")
@@ -37,10 +38,12 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 			csvOut = writeLocationsCSV(v, locationsHeaders)
 		case *openaq.CountriesResponse:
 			csvOut = writeCountriesCSV(v, countriesHeaders)
-		case *openaq.ParametersResponse:
-			csvOut = writeParametersCSV(v, parametersHeaders)
 		case *openaq.MeasurementsResponse:
 			csvOut = writeMeasurementsCSV(v, measurementsHeaders)
+		case *openaq.ParametersResponse:
+			csvOut = writeParametersCSV(v, parametersHeaders)
+		case *openaq.ProvidersResponse:
+			csvOut = writeProvidersCSV(v, providersHeaders)
 		default:
 			fmt.Println("cannot find type")
 		}
@@ -151,6 +154,31 @@ func writeParametersCSV(parameters *openaq.ParametersResponse, headers []string)
 		record = append(record, strconv.FormatInt(s.MeasurementsCount, 10))
 		w.Write(record)
 
+	}
+	w.Flush()
+	return buf.String()
+}
+
+func writeProvidersCSV(providers *openaq.ProvidersResponse, headers []string) string {
+
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.Write(headers)
+
+	for _, s := range providers.Results {
+		var record []string
+		record = append(record, strconv.FormatInt(s.ID, 10))
+		record = append(record, s.Name)
+		record = append(record, s.SourceName)
+		record = append(record, s.ExportPrefix)
+		record = append(record, s.License)
+		record = append(record, s.DatetimeAdded.Format(time.RFC3339))
+		record = append(record, s.DatetimeFirst.Format(time.RFC3339))
+		record = append(record, s.DatetimeLast.Format(time.RFC3339))
+		record = append(record, strconv.FormatInt(s.LocationsCount, 10))
+		record = append(record, strconv.FormatInt(s.MeasurementsCount, 10))
+		record = append(record, strconv.FormatInt(s.CountriesCount, 10))
+		w.Write(record)
 	}
 	w.Flush()
 	return buf.String()
