@@ -44,7 +44,12 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 				csvOut = writeCountriesCSV(v, countriesHeaders)
 			}
 		case *openaq.MeasurementsResponse:
-			csvOut = writeMeasurementsCSV(v, measurementsHeaders)
+			if mini {
+				csvOut = writeMiniMeasurementsCSV(v, miniMeasurementsHeaders)
+			} else {
+				csvOut = writeMeasurementsCSV(v, measurementsHeaders)
+			}
+
 		case *openaq.ParametersResponse:
 			csvOut = writeParametersCSV(v, parametersHeaders)
 		case *openaq.ProvidersResponse:
@@ -393,6 +398,23 @@ func writeMeasurementsTable(measurements *openaq.MeasurementsResponse, headers [
 	}
 	return tw.Render()
 
+}
+
+func writeMiniMeasurementsCSV(measurements *openaq.MeasurementsResponse, headers []string) string {
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.Write(headers)
+	for _, s := range measurements.Results {
+		var record []string
+		record = append(record, fmt.Sprintf("%s %s", s.Parameter.Name, s.Parameter.Units))
+		record = append(record, s.Period.DatetimeFrom.Local.Format(time.RFC3339))
+		record = append(record, s.Period.DatetimeTo.UTC.Format(time.RFC3339))
+		record = append(record, s.Period.Interval)
+		record = append(record, strconv.FormatFloat(s.Value, 'f', -1, 64))
+		w.Write(record)
+	}
+	w.Flush()
+	return buf.String()
 }
 
 // {"parameter", "datetime_local", "datetime_utc", "period", "value"}
