@@ -8,7 +8,6 @@ import (
 	"github.com/openaq/openaq-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 
 	internal "github.com/openaq/openaq-cli/cmd/internal"
 )
@@ -85,10 +84,7 @@ var listCmd = &cobra.Command{
 	Short: "Lists OpenAQ locations",
 	Long:  "Lists OpenAQ locations",
 	Run: func(cmd *cobra.Command, args []string) {
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}
@@ -116,11 +112,7 @@ var getCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}

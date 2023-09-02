@@ -10,7 +10,6 @@ import (
 	"github.com/openaq/openaq-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func init() {
@@ -100,10 +99,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}
