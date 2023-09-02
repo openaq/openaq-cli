@@ -9,12 +9,22 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
+	"github.com/openaq/openaq-cli/cmd/flags"
 	internal "github.com/openaq/openaq-cli/cmd/internal"
 )
 
 func init() {
+
+	flags.AddCountries(listCmd)
+	flags.AddProviders(listCmd)
+	flags.AddIsoCode(listCmd)
+	flags.AddLimit(listCmd)
+	flags.AddPage(listCmd)
+
 	LocationsCmd.AddCommand(listCmd)
 	LocationsCmd.AddCommand(getCmd)
+
+	flags.AddFormat(LocationsCmd)
 }
 
 var LocationsCmd = &cobra.Command{
