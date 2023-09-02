@@ -45,37 +45,6 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.openaq.toml)")
 
-	addLimit(countries.CountriesCmd)
-	addPage(countries.CountriesCmd)
-	addFormat(countries.CountriesCmd)
-	addMini(countries.CountriesCmd)
-
-	addLimit(locations.LocationsCmd)
-	addPage(locations.LocationsCmd)
-	addFormat(locations.LocationsCmd)
-	addCountries(locations.LocationsCmd)
-	addProviders(locations.LocationsCmd)
-	addIsoCode(locations.LocationsCmd)
-
-	addLimit(measurements.MeasurementsCmd)
-	addPage(measurements.MeasurementsCmd)
-	addFormat(measurements.MeasurementsCmd)
-	addFromDate(measurements.MeasurementsCmd)
-	addToDate(measurements.MeasurementsCmd)
-	addPeriodName(measurements.MeasurementsCmd)
-	addMini(measurements.MeasurementsCmd)
-	addParameters(measurements.MeasurementsCmd)
-
-	addLimit(parameters.ParametersCmd)
-	addPage(parameters.ParametersCmd)
-	addFormat(parameters.ParametersCmd)
-	addParametersType(parameters.ParametersCmd)
-
-	addLimit(providers.ProvidersCmd)
-	addPage(providers.ProvidersCmd)
-	addFormat(providers.ProvidersCmd)
-	addParametersType(providers.ProvidersCmd)
-
 	rootCmd.AddCommand(configure.ConfigureCmd)
 	rootCmd.AddCommand(countries.CountriesCmd)
 	rootCmd.AddCommand(locations.LocationsCmd)

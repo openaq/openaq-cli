@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/openaq/openaq-cli/cmd/flags"
 	"github.com/openaq/openaq-cli/cmd/internal"
 	"github.com/openaq/openaq-go"
 	"github.com/spf13/cobra"
@@ -14,6 +15,15 @@ import (
 
 func init() {
 	MeasurementsCmd.AddCommand(listCmd)
+
+	flags.AddLimit(MeasurementsCmd)
+	flags.AddPage(MeasurementsCmd)
+	flags.AddFormat(MeasurementsCmd)
+	flags.AddFromDate(MeasurementsCmd)
+	flags.AddToDate(MeasurementsCmd)
+	flags.AddPeriodName(MeasurementsCmd)
+	flags.AddMini(MeasurementsCmd)
+	flags.AddParameters(MeasurementsCmd)
 }
 
 func parseFlags(flags *pflag.FlagSet) (*openaq.MeasurementsArgs, error) {
