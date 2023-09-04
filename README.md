@@ -118,6 +118,10 @@ __flags__
 
 `--iso` - Filter the results to a specific country using ISO 3166-1 alpha-2 code
 
+`--radius` - The radius in meters to search around the `--coordinates` center point. Must be used with `--coordinates`
+
+`--coordinates` - the center point coordinates for the radius search in from latitude,longitude i.e. y,x. Must be used with `--radius`
+
 ---
 
 ```sh

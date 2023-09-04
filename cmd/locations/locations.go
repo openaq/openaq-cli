@@ -20,6 +20,7 @@ func init() {
 	flags.AddIsoCode(listCmd)
 	flags.AddLimit(listCmd)
 	flags.AddPage(listCmd)
+	flags.AddRadiusSearch(listCmd)
 
 	LocationsCmd.AddCommand(listCmd)
 	LocationsCmd.AddCommand(getCmd)
@@ -84,6 +85,26 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 	}
 	if isoCode != "" {
 		locationArgs.IsoCode = isoCode
+	}
+
+	radius, err := flags.GetInt32("radius")
+	if err != nil {
+		return nil, err
+	}
+	if radius != 0 {
+		locationArgs.Radius = radius
+	}
+
+	coordinates, err := flags.GetFloat64Slice("coordinates")
+	if err != nil {
+		return nil, err
+	}
+	if len(coordinates) > 0 {
+		coords := &openaq.CoordinatesArgs{
+			Lat: coordinates[0],
+			Lon: coordinates[1],
+		}
+		locationArgs.Coordinates = coords
 	}
 
 	return locationArgs, nil
