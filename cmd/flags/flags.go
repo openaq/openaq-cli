@@ -15,6 +15,8 @@ var toDate string
 var periodName string
 var parameterType string
 var isoCode string
+var radius int32
+var coordinates []float64
 
 var countriesIDs []int64
 var providersIDs []int64
@@ -70,4 +72,10 @@ func AddMini(cmd *cobra.Command) {
 
 func AddIsoCode(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVar(&isoCode, "iso", "", "Limit the results to a specific country using ISO 3166-1 alpha-2 code")
+}
+
+func AddRadiusSearch(cmd *cobra.Command) {
+	cmd.PersistentFlags().Int32Var(&radius, "radius", 0, "distance in meters to search around `coordinates`")
+	cmd.PersistentFlags().Float64SliceVar(&coordinates, "coordinates", []float64{}, "Coordinate pair of center point to perform radius search. In form latitude,longitude i.e. y,x")
+	cmd.MarkFlagsRequiredTogether("radius", "coordinates")
 }
