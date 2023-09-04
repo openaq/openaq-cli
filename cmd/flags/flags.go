@@ -15,8 +15,9 @@ var toDate string
 var periodName string
 var parameterType string
 var isoCode string
-var radius int32
+var radius int64
 var coordinates []float64
+var bbox []float64
 
 var countriesIDs []int64
 var providersIDs []int64
@@ -75,7 +76,13 @@ func AddIsoCode(cmd *cobra.Command) {
 }
 
 func AddRadiusSearch(cmd *cobra.Command) {
-	cmd.PersistentFlags().Int32Var(&radius, "radius", 0, "distance in meters to search around `coordinates`")
-	cmd.PersistentFlags().Float64SliceVar(&coordinates, "coordinates", []float64{}, "Coordinate pair of center point to perform radius search. In form latitude,longitude i.e. y,x")
+	cmd.PersistentFlags().Int64Var(&radius, "radius", 0, "distance in meters to search around `coordinates`")
+	cmd.PersistentFlags().Float64SliceVar(&coordinates, "coordinates", nil, "Coordinate pair of center point to perform radius search. In form latitude,longitude i.e. y,x")
 	cmd.MarkFlagsRequiredTogether("radius", "coordinates")
+}
+
+func AddBBox(cmd *cobra.Command) {
+	cmd.PersistentFlags().Float64SliceVar(&bbox, "bbox", nil, "A bounding box to search within in form minx,miny,maxx,maxy")
+	cmd.MarkFlagsMutuallyExclusive("radius", "bbox")
+	cmd.MarkFlagsMutuallyExclusive("coordinates", "bbox")
 }
