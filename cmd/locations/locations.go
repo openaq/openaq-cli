@@ -3,6 +3,7 @@ package locations
 import (
 	"context"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/openaq/openaq-go"
@@ -21,6 +22,7 @@ func init() {
 	flags.AddLimit(listCmd)
 	flags.AddPage(listCmd)
 	flags.AddRadiusSearch(listCmd)
+	flags.AddBBox((listCmd))
 
 	LocationsCmd.AddCommand(listCmd)
 	LocationsCmd.AddCommand(getCmd)
@@ -87,7 +89,7 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 		locationArgs.IsoCode = isoCode
 	}
 
-	radius, err := flags.GetInt32("radius")
+	radius, err := flags.GetInt64("radius")
 	if err != nil {
 		return nil, err
 	}
@@ -105,6 +107,15 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 			Lon: coordinates[1],
 		}
 		locationArgs.Coordinates = coords
+	}
+
+	bbox, err := flags.GetFloat64Slice("bbox")
+
+	if err != nil {
+		return nil, err
+	}
+	if len(bbox) > 0 {
+		locationArgs.Bbox = bbox
 	}
 
 	return locationArgs, nil
@@ -126,7 +137,8 @@ var listCmd = &cobra.Command{
 		}
 		locations, err := client.GetLocations(ctx, *locationArgs)
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 		res := internal.FormatResult(locations, cmd.Flags())
 		fmt.Println(res)

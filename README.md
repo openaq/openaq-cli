@@ -120,7 +120,9 @@ __flags__
 
 `--radius` - The radius in meters to search around the `--coordinates` center point. Must be used with `--coordinates`
 
-`--coordinates` - the center point coordinates for the radius search in from latitude,longitude i.e. y,x. Must be used with `--radius`
+`--coordinates` - The center point coordinates for the radius search in form latitude,longitude i.e. y,x. Must be used with `--radius`
+
+`--bbox` - Filter results to those contained within a spatial bounding box, in form minx,miny,maxx,maxy. Cannot be used with `--radius`/`--coordinates`
 
 ---
 
