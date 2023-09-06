@@ -16,14 +16,16 @@ import (
 )
 
 var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "locations_count", "measurements_count", "providers_count"}
+var countriesMiniHeaders = []string{"countries_id", "iso_code", "name", "parameters"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
-var parametersHeaders = []string{"parameters_id", "name", "display_name", "units", "description", "locations_count", "measurements_count"}
 var measurementsParametersHeaders = []string{"parameter_id", "parameter_name", "parameter_units", "parameter_display_name"}
 var measurementsPeriodHeaders = []string{"periodLabel", "periodInterval", "periodDatetimeFromUTC", "periodDatetimeFromLocal", "periodDatetimeToUTC", "periodDatetimeToLocal"}
 var measurementsCoverageHeaders = []string{"expectedCount", "expectedInterval", "observedCount", "observedInterval", "percentComplete", "percentCoverage", "datetimeFromUTC", "datetimeFromLocal", "datetimeToUTC", "datetimeToLocal"}
 var measurementsSummaryHeaders = []string{"min", "q02", "q25", "median", "q75", "q98", "max", "sd"}
 var measurementsHeaders = appendMany([][]string{measurementsParametersHeaders, {"value"}, measurementsPeriodHeaders, measurementsCoverageHeaders, measurementsSummaryHeaders})
 var miniMeasurementsHeaders = []string{"parameter", "datetime_local", "datetime_utc", "period", "value"}
+var parametersHeaders = []string{"parameters_id", "name", "display_name", "units", "description", "locations_count", "measurements_count"}
+var providersHeaders = []string{"providers_id", "name", "source_name", "export_prefix", "license", "datetime_added", "datetime_first", "datetime_last", "locations_count", "measurements_count", "countries_count"}
 
 func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 	jsonFlag, _ := flags.GetBool("json")
@@ -36,11 +38,22 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 		case *openaq.LocationsResponse:
 			csvOut = writeLocationsCSV(v, locationsHeaders)
 		case *openaq.CountriesResponse:
-			csvOut = writeCountriesCSV(v, countriesHeaders)
+			if mini {
+				csvOut = writeMiniCountriesCSV(v, countriesMiniHeaders)
+			} else {
+				csvOut = writeCountriesCSV(v, countriesHeaders)
+			}
+		case *openaq.MeasurementsResponse:
+			if mini {
+				csvOut = writeMiniMeasurementsCSV(v, miniMeasurementsHeaders)
+			} else {
+				csvOut = writeMeasurementsCSV(v, measurementsHeaders)
+			}
+
 		case *openaq.ParametersResponse:
 			csvOut = writeParametersCSV(v, parametersHeaders)
-		case *openaq.MeasurementsResponse:
-			csvOut = writeMeasurementsCSV(v, measurementsHeaders)
+		case *openaq.ProvidersResponse:
+			csvOut = writeProvidersCSV(v, providersHeaders)
 		default:
 			fmt.Println("cannot find type")
 		}
@@ -69,9 +82,15 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 			return writeMeasurementsTable(v, measurementsHeaders)
 		}
 	case *openaq.CountriesResponse:
-		return writeCountriesTable(v, countriesHeaders)
+		if mini {
+			return writeMiniCountriesTable(v, countriesMiniHeaders)
+		} else {
+			return writeCountriesTable(v, countriesHeaders)
+		}
 	case *openaq.ParametersResponse:
 		return writeParametersTable(v, parametersHeaders)
+	case *openaq.ProvidersResponse:
+		return writeProvidersTable(v, providersHeaders)
 	default:
 		return ""
 	}
@@ -112,6 +131,25 @@ func writeCountriesCSV(countries *openaq.CountriesResponse, headers []string) st
 	return buf.String()
 }
 
+func writeMiniCountriesCSV(countries *openaq.CountriesResponse, headers []string) string {
+
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.Write(headers)
+
+	for _, s := range countries.Results {
+		var record []string
+		record = append(record, strconv.FormatInt(s.ID, 10))
+		record = append(record, s.Code)
+		record = append(record, s.Name)
+		record = append(record, "")
+		w.Write(record)
+
+	}
+	w.Flush()
+	return buf.String()
+}
+
 func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) string {
 	var columns = len(headers)
 	tw := table.NewWriter()
@@ -130,7 +168,20 @@ func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) 
 		tw.AppendRow(row)
 	}
 	return tw.Render()
-
+}
+func writeMiniCountriesTable(countries *openaq.CountriesResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range countries.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Code)
+		row = append(row, s.Name)
+		row = append(row, "")
+		tw.AppendRow(row)
+	}
+	return tw.Render()
 }
 
 // parameters
@@ -151,6 +202,54 @@ func writeParametersCSV(parameters *openaq.ParametersResponse, headers []string)
 		record = append(record, strconv.FormatInt(s.MeasurementsCount, 10))
 		w.Write(record)
 
+	}
+	w.Flush()
+	return buf.String()
+}
+
+func writeProvidersTable(countries *openaq.ProvidersResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range countries.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Name)
+		row = append(row, s.SourceName)
+		row = append(row, s.ExportPrefix)
+		row = append(row, s.License)
+		row = append(row, s.DatetimeAdded.Format(time.RFC3339))
+		row = append(row, s.DatetimeFirst.Format(time.RFC3339))
+		row = append(row, s.DatetimeLast.Format(time.RFC3339))
+		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
+		row = append(row, strconv.FormatInt(s.MeasurementsCount, 10))
+		row = append(row, strconv.FormatInt(s.CountriesCount, 10))
+		tw.AppendRow(row)
+	}
+	return tw.Render()
+
+}
+
+func writeProvidersCSV(providers *openaq.ProvidersResponse, headers []string) string {
+
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.Write(headers)
+
+	for _, s := range providers.Results {
+		var record []string
+		record = append(record, strconv.FormatInt(s.ID, 10))
+		record = append(record, s.Name)
+		record = append(record, s.SourceName)
+		record = append(record, s.ExportPrefix)
+		record = append(record, s.License)
+		record = append(record, s.DatetimeAdded.Format(time.RFC3339))
+		record = append(record, s.DatetimeFirst.Format(time.RFC3339))
+		record = append(record, s.DatetimeLast.Format(time.RFC3339))
+		record = append(record, strconv.FormatInt(s.LocationsCount, 10))
+		record = append(record, strconv.FormatInt(s.MeasurementsCount, 10))
+		record = append(record, strconv.FormatInt(s.CountriesCount, 10))
+		w.Write(record)
 	}
 	w.Flush()
 	return buf.String()
@@ -301,6 +400,23 @@ func writeMeasurementsTable(measurements *openaq.MeasurementsResponse, headers [
 
 }
 
+func writeMiniMeasurementsCSV(measurements *openaq.MeasurementsResponse, headers []string) string {
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.Write(headers)
+	for _, s := range measurements.Results {
+		var record []string
+		record = append(record, fmt.Sprintf("%s %s", s.Parameter.Name, s.Parameter.Units))
+		record = append(record, s.Period.DatetimeFrom.Local.Format(time.RFC3339))
+		record = append(record, s.Period.DatetimeTo.UTC.Format(time.RFC3339))
+		record = append(record, s.Period.Interval)
+		record = append(record, strconv.FormatFloat(s.Value, 'f', -1, 64))
+		w.Write(record)
+	}
+	w.Flush()
+	return buf.String()
+}
+
 // {"parameter", "datetime_local", "datetime_utc", "period", "value"}
 func writeMiniMeasurementsTable(measurements *openaq.MeasurementsResponse, headers []string) string {
 	var columns = len(headers)
@@ -309,8 +425,8 @@ func writeMiniMeasurementsTable(measurements *openaq.MeasurementsResponse, heade
 	for _, s := range measurements.Results {
 		row := make(table.Row, 0, columns)
 		row = append(row, fmt.Sprintf("%s %s", s.Parameter.Name, s.Parameter.Units))
-		row = append(row, s.Period.DatetimeFrom.Local)
-		row = append(row, s.Period.DatetimeTo.UTC)
+		row = append(row, s.Period.DatetimeFrom.Local.Format(time.RFC3339))
+		row = append(row, s.Period.DatetimeTo.UTC.Format(time.RFC3339))
 		row = append(row, s.Period.Interval)
 		row = append(row, s.Value)
 		tw.AppendRow(row)

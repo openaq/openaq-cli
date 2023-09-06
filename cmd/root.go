@@ -17,6 +17,7 @@ import (
 	"github.com/openaq/openaq-cli/cmd/locations"
 	"github.com/openaq/openaq-cli/cmd/measurements"
 	"github.com/openaq/openaq-cli/cmd/parameters"
+	"github.com/openaq/openaq-cli/cmd/providers"
 	"github.com/openaq/openaq-cli/cmd/version"
 )
 
@@ -44,35 +45,12 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.openaq.toml)")
 
-	addLimit(countries.CountriesCmd)
-	addPage(countries.CountriesCmd)
-	addFormat(countries.CountriesCmd)
-
-	addLimit(parameters.ParametersCmd)
-	addPage(parameters.ParametersCmd)
-	addFormat(parameters.ParametersCmd)
-	addParametersType(parameters.ParametersCmd)
-
-	addLimit(locations.LocationsCmd)
-	addPage(locations.LocationsCmd)
-	addFormat(locations.LocationsCmd)
-	addCountries(locations.LocationsCmd)
-	addProviders(locations.LocationsCmd)
-
-	addLimit(measurements.MeasurementsCmd)
-	addPage(measurements.MeasurementsCmd)
-	addFormat(measurements.MeasurementsCmd)
-	addFromDate(measurements.MeasurementsCmd)
-	addToDate(measurements.MeasurementsCmd)
-	addPeriodName(measurements.MeasurementsCmd)
-	addMini(measurements.MeasurementsCmd)
-	addParameters(measurements.MeasurementsCmd)
-
 	rootCmd.AddCommand(configure.ConfigureCmd)
 	rootCmd.AddCommand(countries.CountriesCmd)
 	rootCmd.AddCommand(locations.LocationsCmd)
-	rootCmd.AddCommand(parameters.ParametersCmd)
 	rootCmd.AddCommand(measurements.MeasurementsCmd)
+	rootCmd.AddCommand(parameters.ParametersCmd)
+	rootCmd.AddCommand(providers.ProvidersCmd)
 	rootCmd.AddCommand(version.VersionCmd)
 }
 

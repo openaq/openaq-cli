@@ -1,4 +1,4 @@
-package parameters
+package providers
 
 import (
 	"context"
@@ -17,18 +17,17 @@ func init() {
 
 	flags.AddLimit(listCmd)
 	flags.AddPage(listCmd)
-	flags.AddParametersType(listCmd)
 
-	ParametersCmd.AddCommand(listCmd)
-	ParametersCmd.AddCommand(getCmd)
+	ProvidersCmd.AddCommand(listCmd)
+	ProvidersCmd.AddCommand(getCmd)
 
-	flags.AddFormat(ParametersCmd)
+	flags.AddFormat(ProvidersCmd)
 }
 
-var ParametersCmd = &cobra.Command{
-	Use:   "parameters",
-	Short: "OpenAQ parameters",
-	Long:  `OpenAQ parameters`,
+var ProvidersCmd = &cobra.Command{
+	Use:   "providers",
+	Short: "OpenAQ providers",
+	Long:  `OpenAQ providers`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		err := internal.CheckAPIKey()
 		if err != nil {
@@ -38,8 +37,8 @@ var ParametersCmd = &cobra.Command{
 	},
 }
 
-func parseFlags(flags *pflag.FlagSet) (*openaq.ParametersArgs, error) {
-	parametersArgs := &openaq.ParametersArgs{}
+func parseFlags(flags *pflag.FlagSet) (*openaq.ProvidersArgs, error) {
+	providersArgs := &openaq.ProvidersArgs{}
 	baseArgs := openaq.BaseArgs{}
 	limit, err := flags.GetInt64("limit")
 	if err != nil {
@@ -51,19 +50,14 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.ParametersArgs, error) {
 		return nil, err
 	}
 	baseArgs.Page = page
-	parametersArgs.BaseArgs = baseArgs
-	parameterType, err := flags.GetString("type")
-	if err != nil {
-		return nil, err
-	}
-	parametersArgs.ParameterType = parameterType
-	return parametersArgs, nil
+	providersArgs.BaseArgs = baseArgs
+	return providersArgs, nil
 }
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Lists OpenAQ parameters",
-	Long:  `Lists OpenAQ parameters"`,
+	Short: "Lists OpenAQ providers",
+	Long:  `Lists OpenAQ providers"`,
 	PreRun: func(cmd *cobra.Command, args []string) {
 
 	},
@@ -73,40 +67,41 @@ var listCmd = &cobra.Command{
 			fmt.Println("cannot initialize client")
 		}
 		ctx := context.Background()
-		parametersArgs, err := parseFlags(cmd.Flags())
+		providersArgs, err := parseFlags(cmd.Flags())
 		if err != nil {
 			panic(err)
 		}
-		parameters, err := client.GetParameters(ctx, *parametersArgs)
+		providers, err := client.GetProviders(ctx, *providersArgs)
 		if err != nil {
 			return internal.ErrorCheck(err)
 		}
-		res := internal.FormatResult(parameters, cmd.Flags())
+		res := internal.FormatResult(providers, cmd.Flags())
 		fmt.Println(res)
 		return nil
 	},
 }
 
 var getCmd = &cobra.Command{
-	Use:   "get [parametersID]",
-	Short: "Get a single parameter by parameters ID",
-	Long:  `Get a single parameter by parameters ID`,
+	Use:   "get [providersID]",
+	Short: "Get a single provider by providers ID",
+	Long:  `Get a single provider by providers ID`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		parametersID, err := strconv.ParseInt(args[0], 10, 64)
+		providersID, err := strconv.ParseInt(args[0], 10, 64)
 		if err != nil {
 			panic(err)
 		}
 		client, err := internal.SetupClient()
+
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}
 		ctx := context.Background()
-		parameter, err := client.GetParameter(ctx, parametersID)
+		provider, err := client.GetProvider(ctx, providersID)
 		if err != nil {
 			panic(err)
 		}
-		res := internal.FormatResult(parameter, cmd.Flags())
+		res := internal.FormatResult(provider, cmd.Flags())
 		fmt.Println(res)
 	},
 }

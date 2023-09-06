@@ -3,19 +3,31 @@ package locations
 import (
 	"context"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/openaq/openaq-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 
+	"github.com/openaq/openaq-cli/cmd/flags"
 	internal "github.com/openaq/openaq-cli/cmd/internal"
 )
 
 func init() {
+
+	flags.AddCountries(listCmd)
+	flags.AddProviders(listCmd)
+	flags.AddIsoCode(listCmd)
+	flags.AddLimit(listCmd)
+	flags.AddPage(listCmd)
+	flags.AddRadiusSearch(listCmd)
+	flags.AddBBox((listCmd))
+
 	LocationsCmd.AddCommand(listCmd)
 	LocationsCmd.AddCommand(getCmd)
+
+	flags.AddFormat(LocationsCmd)
 }
 
 var LocationsCmd = &cobra.Command{
@@ -47,6 +59,7 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 	locationArgs.BaseArgs = baseArgs
 	var countries openaq.Countries
 	var providers openaq.Providers
+
 	countries_ids, err := flags.GetInt64Slice("countries")
 	if err != nil {
 		return nil, err
@@ -67,6 +80,44 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.LocationArgs, error) {
 		}
 		locationArgs.Providers = &providers
 	}
+
+	isoCode, err := flags.GetString("iso")
+	if err != nil {
+		return nil, err
+	}
+	if isoCode != "" {
+		locationArgs.IsoCode = isoCode
+	}
+
+	radius, err := flags.GetInt64("radius")
+	if err != nil {
+		return nil, err
+	}
+	if radius != 0 {
+		locationArgs.Radius = radius
+	}
+
+	coordinates, err := flags.GetFloat64Slice("coordinates")
+	if err != nil {
+		return nil, err
+	}
+	if len(coordinates) > 0 {
+		coords := &openaq.CoordinatesArgs{
+			Lat: coordinates[0],
+			Lon: coordinates[1],
+		}
+		locationArgs.Coordinates = coords
+	}
+
+	bbox, err := flags.GetFloat64Slice("bbox")
+
+	if err != nil {
+		return nil, err
+	}
+	if len(bbox) > 0 {
+		locationArgs.Bbox = bbox
+	}
+
 	return locationArgs, nil
 }
 
@@ -75,10 +126,7 @@ var listCmd = &cobra.Command{
 	Short: "Lists OpenAQ locations",
 	Long:  "Lists OpenAQ locations",
 	Run: func(cmd *cobra.Command, args []string) {
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}
@@ -89,7 +137,8 @@ var listCmd = &cobra.Command{
 		}
 		locations, err := client.GetLocations(ctx, *locationArgs)
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
+			os.Exit(1)
 		}
 		res := internal.FormatResult(locations, cmd.Flags())
 		fmt.Println(res)
@@ -106,11 +155,7 @@ var getCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}

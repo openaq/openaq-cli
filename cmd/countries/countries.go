@@ -8,14 +8,21 @@ import (
 	"github.com/openaq/openaq-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 
+	flags "github.com/openaq/openaq-cli/cmd/flags"
 	internal "github.com/openaq/openaq-cli/cmd/internal"
 )
 
 func init() {
+
+	flags.AddLimit(listCmd)
+	flags.AddPage(listCmd)
+
 	CountriesCmd.AddCommand(listCmd)
 	CountriesCmd.AddCommand(getCmd)
+
+	flags.AddFormat(CountriesCmd)
+	flags.AddMini(CountriesCmd)
 }
 
 func parseFlags(flags *pflag.FlagSet) (*openaq.CountryArgs, error) {
@@ -55,10 +62,7 @@ var listCmd = &cobra.Command{
 	Short: "List countries",
 	Long:  `List countries`,
 	Run: func(cmd *cobra.Command, args []string) {
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}
@@ -86,10 +90,7 @@ var getCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}

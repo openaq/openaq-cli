@@ -6,15 +6,24 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/openaq/openaq-cli/cmd/flags"
 	"github.com/openaq/openaq-cli/cmd/internal"
 	"github.com/openaq/openaq-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 func init() {
 	MeasurementsCmd.AddCommand(listCmd)
+
+	flags.AddLimit(MeasurementsCmd)
+	flags.AddPage(MeasurementsCmd)
+	flags.AddFormat(MeasurementsCmd)
+	flags.AddFromDate(MeasurementsCmd)
+	flags.AddToDate(MeasurementsCmd)
+	flags.AddPeriodName(MeasurementsCmd)
+	flags.AddMini(MeasurementsCmd)
+	flags.AddParameters(MeasurementsCmd)
 }
 
 func parseFlags(flags *pflag.FlagSet) (*openaq.MeasurementsArgs, error) {
@@ -47,12 +56,18 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.MeasurementsArgs, error) {
 		measurementsArgs.Parameters = &parameters
 	}
 	from, err := flags.GetString("from")
+
 	if err != nil {
 		return nil, err
 	}
-	dateFrom, err := time.Parse("2006-01-02", from)
-	measurementsArgs.DatetimeFrom = dateFrom
-
+	var dateFrom time.Time
+	if from != "" {
+		dateFrom, err = time.Parse("2006-01-02", from)
+		if err != nil {
+			return nil, err
+		}
+		measurementsArgs.DatetimeFrom = dateFrom
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +78,10 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.MeasurementsArgs, error) {
 	var dateTo time.Time
 	if to != "" {
 		dateTo, err = time.Parse("2006-01-02", to)
-		measurementsArgs.DatetimeTo = dateTo
 		if err != nil {
 			return nil, err
 		}
+		measurementsArgs.DatetimeTo = dateTo
 	}
 	return measurementsArgs, nil
 }
@@ -94,10 +109,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		config := openaq.Config{
-			APIKey: viper.GetString("api-key"),
-		}
-		client, err := openaq.NewClient(config)
+		client, err := internal.SetupClient()
 		if err != nil {
 			fmt.Println("cannot initialize client")
 		}
