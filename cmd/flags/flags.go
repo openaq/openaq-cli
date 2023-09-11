@@ -32,7 +32,7 @@ func AddParameters(cmd *cobra.Command) {
 }
 
 func AddParametersType(cmd *cobra.Command) {
-	cmd.PersistentFlags().StringVar(&parameterType, "type", "", "filter parameters to either `pollutants` or `meteorolgoical` parameters")
+	cmd.PersistentFlags().StringVar(&parameterType, "type", "", "filter parameters to either `pollutant` or `meteorological` parameters")
 }
 
 func AddProviders(cmd *cobra.Command) {
