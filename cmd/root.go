@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/openaq/openaq-cli/cmd/about"
 	"github.com/openaq/openaq-cli/cmd/configure"
 	"github.com/openaq/openaq-cli/cmd/countries"
 	"github.com/openaq/openaq-cli/cmd/locations"
@@ -52,6 +53,7 @@ func init() {
 	rootCmd.AddCommand(parameters.ParametersCmd)
 	rootCmd.AddCommand(providers.ProvidersCmd)
 	rootCmd.AddCommand(version.VersionCmd)
+	rootCmd.AddCommand(about.AboutCmd)
 }
 
 func initConfig() {
