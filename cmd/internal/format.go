@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/nwidger/jsoncolor"
@@ -154,6 +155,7 @@ func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) 
 	var columns = len(headers)
 	tw := table.NewWriter()
 	writeTableHeader(tw, headers)
+
 	for _, s := range countries.Results {
 		row := make(table.Row, 0, columns)
 		row = append(row, strconv.FormatInt(s.ID, 10))
@@ -161,6 +163,7 @@ func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) 
 		row = append(row, s.Name)
 		row = append(row, s.DatetimeFirst.Format(time.RFC3339))
 		row = append(row, s.DatetimeLast.Format(time.RFC3339))
+		row = append(row, joinDisplayNames(s.Parameters))
 		row = append(row, "")
 		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
 		row = append(row, strconv.FormatInt(s.MeasurementsCount, 10))
@@ -169,6 +172,18 @@ func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) 
 	}
 	return tw.Render()
 }
+
+func joinDisplayNames(params []openaq.ParameterBase) string {
+	var builder strings.Builder
+	for i, param := range params {
+		builder.WriteString(param.DisplayName)
+		if i < len(params)-1 { // if not the last parameter, add a comma
+			builder.WriteString(", ")
+		}
+	}
+	return builder.String()
+}
+
 func writeMiniCountriesTable(countries *openaq.CountriesResponse, headers []string) string {
 	var columns = len(headers)
 	tw := table.NewWriter()
