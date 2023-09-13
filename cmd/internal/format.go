@@ -17,7 +17,7 @@ import (
 )
 
 var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "locations_count", "measurements_count", "providers_count"}
-var countriesMiniHeaders = []string{"countries_id", "iso_code", "name", "parameters"}
+var countriesMiniHeaders = []string{"countries_id", "iso_code", "name"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
 var measurementsParametersHeaders = []string{"parameter_id", "parameter_name", "parameter_units", "parameter_display_name"}
 var measurementsPeriodHeaders = []string{"periodLabel", "periodInterval", "periodDatetimeFromUTC", "periodDatetimeFromLocal", "periodDatetimeToUTC", "periodDatetimeToLocal"}
@@ -191,7 +191,6 @@ func writeMiniCountriesTable(countries *openaq.CountriesResponse, headers []stri
 		row = append(row, strconv.FormatInt(s.ID, 10))
 		row = append(row, s.Code)
 		row = append(row, s.Name)
-		row = append(row, joinParamDisplayNames(s.Parameters))
 		tw.AppendRow(row)
 	}
 	return tw.Render()
