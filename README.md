@@ -61,6 +61,16 @@ _the following only work on resource `list` calls_
 
 ### Commands
 
+about 
+---
+
+```sh
+openaq about
+```
+
+Provides a description of the OpenAQ CLI.
+
+
 configure 
 ---
 __api-key__

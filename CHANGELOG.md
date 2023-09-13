@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.0 - 2023-09-13
+
+* Adds parameters to `countries list` table view resolved issue #32
+* Fixes typo in `parameters` `--type` flag documentation resolved issue #34
+* Removed parameters from `countries list` `--mini` table resolved issue #32
+* Add `openaq about` command
+
 ## v0.2.0 - 2023-09-05
 
 * Default value for `locations list` `--from` flag fixed issue #1
