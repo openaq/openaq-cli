@@ -23,7 +23,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.4.6
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/openaq/openaq-go v0.0.0-20230904223615-5231ec0c2ac4
+	github.com/openaq/openaq-go v0.0.0-20230914173703-fedf1c1f4cbf
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
