@@ -25,15 +25,9 @@ func appendMany[T any](slices [][]T) []T {
 
 func SetupClient() (*openaq.Client, error) {
 	config := openaq.Config{
-		APIKey:        viper.GetString("api-key"),
-		UserAgent:     "openaq-cli",
-		BaseURLScheme: "http",
-		BaseURLHost:   "localhost:8000",
+		APIKey:    viper.GetString("api-key"),
+		UserAgent: "openaq-cli",
 	}
-	// config := openaq.Config{
-	// 	APIKey:    viper.GetString("api-key"),
-	// 	UserAgent: "openaq-cli",
-	// }
 	client, err := openaq.NewClient(config)
 	if err != nil {
 		return nil, err
