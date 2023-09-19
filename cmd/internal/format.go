@@ -18,6 +18,7 @@ import (
 
 var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "locations_count", "measurements_count", "providers_count"}
 var countriesMiniHeaders = []string{"countries_id", "iso_code", "name"}
+var instrumentsHeaders = []string{"id", "name", "isMonitor", "locationsCount"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
 var measurementsParametersHeaders = []string{"parameter_id", "parameter_name", "parameter_units", "parameter_display_name"}
 var measurementsPeriodHeaders = []string{"periodLabel", "periodInterval", "periodDatetimeFromUTC", "periodDatetimeFromLocal", "periodDatetimeToUTC", "periodDatetimeToLocal"}
@@ -59,7 +60,8 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 
 		case *openaq.OwnersResponse:
 			csvOut = writeOwnersCSV(v, ownersHeaders)
-
+		case *openaq.InstrumentsResponse:
+			csvOut = writeInstrumentsCSV(v, instrumentsHeaders)
 		default:
 			fmt.Println("cannot find type")
 		}
@@ -101,6 +103,8 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 		return writeParametersTable(v, parametersHeaders)
 	case *openaq.ProvidersResponse:
 		return writeProvidersTable(v, providersHeaders)
+	case *openaq.InstrumentsResponse:
+		return writeInstrumentsTable(v, instrumentsHeaders)
 	default:
 		return ""
 	}
@@ -203,6 +207,40 @@ func writeMiniCountriesTable(countries *openaq.CountriesResponse, headers []stri
 		tw.AppendRow(row)
 	}
 	return tw.Render()
+}
+
+// instruments
+func writeInstrumentsTable(instruments *openaq.InstrumentsResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range instruments.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Name)
+		row = append(row, "") // placeholder s.IsMonitor
+		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
+		tw.AppendRow(row)
+	}
+	return tw.Render()
+}
+
+func writeInstrumentsCSV(data *openaq.InstrumentsResponse, headers []string) string {
+	var buffer bytes.Buffer
+	writer := csv.NewWriter(&buffer)
+
+	writer.Write(headers)
+
+	for _, s := range data.Results {
+		writer.Write([]string{
+			strconv.FormatInt(s.ID, 10),
+			s.Name,
+			strconv.FormatInt(s.LocationsCount, 10),
+		})
+	}
+
+	writer.Flush()
+	return buffer.String()
 }
 
 // owners
