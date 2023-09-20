@@ -15,6 +15,7 @@ import (
 	"github.com/openaq/openaq-cli/cmd/about"
 	"github.com/openaq/openaq-cli/cmd/configure"
 	"github.com/openaq/openaq-cli/cmd/countries"
+	"github.com/openaq/openaq-cli/cmd/instruments"
 	"github.com/openaq/openaq-cli/cmd/locations"
 	"github.com/openaq/openaq-cli/cmd/manufacturers"
 	"github.com/openaq/openaq-cli/cmd/measurements"
@@ -50,6 +51,7 @@ func init() {
 
 	rootCmd.AddCommand(configure.ConfigureCmd)
 	rootCmd.AddCommand(countries.CountriesCmd)
+	rootCmd.AddCommand(instruments.InstrumentsCmd)
 	rootCmd.AddCommand(locations.LocationsCmd)
 	rootCmd.AddCommand(manufacturers.ManufacturersCmd)
 	rootCmd.AddCommand(measurements.MeasurementsCmd)
