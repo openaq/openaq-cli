@@ -9,7 +9,7 @@ import (
 type APIKeyNotSetError struct{}
 
 func (e *APIKeyNotSetError) Error() string {
-	return "API Key not set, run `openaq configure api-key set [api-key]` to set value"
+	return "API Key not set, run `openaq settings set api-key [api-key]` to set value"
 }
 
 type InvalidCredentialsError struct{}

@@ -162,10 +162,6 @@ github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyua
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/nwidger/jsoncolor v0.3.2 h1:rVJJlwAWDJShnbTYOQ5RM7yTA20INyKXlJ/fg4JMhHQ=
 github.com/nwidger/jsoncolor v0.3.2/go.mod h1:Cs34umxLbJvgBMnVNVqhji9BhoT/N/KinHqZptQ7cf4=
-github.com/openaq/openaq-go v0.0.0-20230904220041-fb818a7aa7dd h1:SpFOw0m/9ojz4WleY0xulWY9x/3Tvf9Dv4yVvYHFm3I=
-github.com/openaq/openaq-go v0.0.0-20230904220041-fb818a7aa7dd/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
-github.com/openaq/openaq-go v0.0.0-20230904223615-5231ec0c2ac4 h1:WA0AbaKYv3gVzwCustf/4MyAvBmMXrLAuoIjajhT/Dk=
-github.com/openaq/openaq-go v0.0.0-20230904223615-5231ec0c2ac4/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
 github.com/openaq/openaq-go v0.0.0-20230914173703-fedf1c1f4cbf h1:6d13zUsYtr110RK7msZsyhVgNWxygh5QMc0HWjCR0mc=
 github.com/openaq/openaq-go v0.0.0-20230914173703-fedf1c1f4cbf/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
 github.com/pelletier/go-toml/v2 v2.0.8 h1:0ctb6s9mE31h0/lhu+J6OPmVeDxJn+kYnJc2jZR9tGQ=

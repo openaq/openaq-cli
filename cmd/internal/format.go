@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/pflag"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/openaq/openaq-cli/cmd/config"
 	"github.com/openaq/openaq-go"
 )
 
@@ -34,7 +35,7 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 	csvFlag, _ := flags.GetBool("csv")
 	pretty, _ := flags.GetBool("pretty")
 	mini, _ := flags.GetBool("mini")
-	if csvFlag {
+	if csvFlag || (config.CSVConfig && !jsonFlag) {
 		var csvOut string
 		switch v := v.(type) {
 		case *openaq.LocationsResponse:
@@ -66,10 +67,10 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 
 		return csvOut
 	}
-	if jsonFlag {
+	if jsonFlag || (config.JSONConfig && !csvFlag) {
 		var out []byte
 		var err error
-		if pretty {
+		if pretty || config.PrettyConfig {
 			out, err = jsoncolor.MarshalIndent(v, "", "   ")
 		} else {
 			out, err = json.Marshal(v)
