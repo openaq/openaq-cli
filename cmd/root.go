@@ -4,16 +4,13 @@ Copyright © OpenAQ <dev@openaq.org>
 package cmd
 
 import (
-	"fmt"
-	"path"
-
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/openaq/openaq-cli/cmd/about"
-	"github.com/openaq/openaq-cli/cmd/configure"
+	"github.com/openaq/openaq-cli/cmd/config"
+
 	"github.com/openaq/openaq-cli/cmd/countries"
 	"github.com/openaq/openaq-cli/cmd/instruments"
 	"github.com/openaq/openaq-cli/cmd/locations"
@@ -22,13 +19,11 @@ import (
 	"github.com/openaq/openaq-cli/cmd/owners"
 	"github.com/openaq/openaq-cli/cmd/parameters"
 	"github.com/openaq/openaq-cli/cmd/providers"
+	"github.com/openaq/openaq-cli/cmd/settings"
 	"github.com/openaq/openaq-cli/cmd/version"
 )
 
 var (
-	// Used for flags.
-	cfgFile string
-
 	rootCmd = &cobra.Command{
 		Use:   "openaq",
 		Short: "Command Line Interface for the OpenAQ API",
@@ -46,10 +41,10 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.openaq.toml)")
+	cobra.OnInitialize(config.InitConfig)
+	rootCmd.PersistentFlags().StringVarP(&config.CfgFile, "config", "c", "", "config file (default is $HOME/.openaq.toml)")
 
-	rootCmd.AddCommand(configure.ConfigureCmd)
+	rootCmd.AddCommand(settings.SettingsCmd)
 	rootCmd.AddCommand(countries.CountriesCmd)
 	rootCmd.AddCommand(instruments.InstrumentsCmd)
 	rootCmd.AddCommand(locations.LocationsCmd)
@@ -60,27 +55,4 @@ func init() {
 	rootCmd.AddCommand(owners.OwnersCmd)
 	rootCmd.AddCommand(version.VersionCmd)
 	rootCmd.AddCommand(about.AboutCmd)
-}
-
-func initConfig() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
-	} else {
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
-		if _, err := os.Stat(path.Join(home, ".openaq.toml")); err != nil {
-			fmt.Printf("Config file not found in home directory creating now...\n")
-			os.Create(path.Join(home, ".openaq.toml"))
-		}
-		viper.AddConfigPath(home)
-		viper.SetConfigType("toml")
-		viper.SetConfigName(".openaq")
-	}
-
-	viper.AutomaticEnv()
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		fmt.Println(err)
-	}
 }

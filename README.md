@@ -32,7 +32,7 @@ go install github.com/openaq/openaq-cli
 To set your API Key run: 
 
 ```sh
-openaq configure api-key set my-super-secret-openaq-api-key-1234-5678
+openaq settings set api-key my-super-secret-openaq-api-key-1234-5678
 ```
 
 replacing `my-super-secret-openaq-api-key-1234-5678` with your API Key
@@ -70,14 +70,6 @@ openaq about
 
 Provides a description of the OpenAQ CLI.
 
-
-configure 
----
-__api-key__
-
-```sh
-openaq configure api-key set [api-key]
-```
 
 countries
 ---
@@ -197,6 +189,38 @@ openaq parameters get [parametersID]
 Provides a single parameter for a given parametersID
 
 
+settings 
+---
+__api-key__
+
+```sh
+openaq settings set api-key [api-key]
+```
+
+```sh
+openaq settings get api-key
+```
+
+__format__
+
+```sh
+openaq settings set format [json|csv|none]
+```
+
+```sh
+openaq settings get format
+```
+
+__prretty__
+
+```sh
+openaq settings set pretty [true|false]
+```
+
+```sh
+openaq settings get pretty
+```
+
 version 
 ---
 ```
@@ -237,6 +261,10 @@ The OpenAQ CLI requires a configuration file to store and access certain variabl
 
 ```toml
 api-key = ''
+
+[defaults]
+format = 'json'
+pretty = false
 ```
 
 
