@@ -1,4 +1,4 @@
-package owners
+package instruments
 
 import (
 	"context"
@@ -18,16 +18,16 @@ func init() {
 	flags.AddLimit(listCmd)
 	flags.AddPage(listCmd)
 
-	OwnersCmd.AddCommand(listCmd)
-	OwnersCmd.AddCommand(getCmd)
+	InstrumentsCmd.AddCommand(listCmd)
+	InstrumentsCmd.AddCommand(getCmd)
 
-	flags.AddFormat(OwnersCmd)
+	flags.AddFormat(InstrumentsCmd)
 }
 
-var OwnersCmd = &cobra.Command{
-	Use:   "owners",
-	Short: "OpenAQ owners",
-	Long:  `OpenAQ owners`,
+var InstrumentsCmd = &cobra.Command{
+	Use:   "instruments",
+	Short: "OpenAQ instruments",
+	Long:  `OpenAQ instruments`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		err := internal.CheckAPIKey()
 		if err != nil {
@@ -37,8 +37,8 @@ var OwnersCmd = &cobra.Command{
 	},
 }
 
-func parseFlags(flags *pflag.FlagSet) (*openaq.OwnersArgs, error) {
-	ownersArgs := &openaq.OwnersArgs{}
+func parseFlags(flags *pflag.FlagSet) (*openaq.InstrumentArgs, error) {
+	instrumentsArgs := &openaq.InstrumentArgs{}
 	baseArgs := openaq.BaseArgs{}
 	limit, err := flags.GetInt64("limit")
 	if err != nil {
@@ -50,14 +50,14 @@ func parseFlags(flags *pflag.FlagSet) (*openaq.OwnersArgs, error) {
 		return nil, err
 	}
 	baseArgs.Page = page
-	ownersArgs.BaseArgs = baseArgs
-	return ownersArgs, nil
+	instrumentsArgs.BaseArgs = baseArgs
+	return instrumentsArgs, nil
 }
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Lists OpenAQ owners",
-	Long:  `Lists OpenAQ owners"`,
+	Short: "Lists OpenAQ instruments",
+	Long:  `Lists OpenAQ instruments"`,
 	PreRun: func(cmd *cobra.Command, args []string) {
 
 	},
@@ -67,27 +67,27 @@ var listCmd = &cobra.Command{
 			fmt.Println("cannot initialize client")
 		}
 		ctx := context.Background()
-		ownersArgs, err := parseFlags(cmd.Flags())
+		instrumentsArgs, err := parseFlags(cmd.Flags())
 		if err != nil {
 			panic(err)
 		}
-		owners, err := client.GetOwners(ctx, *ownersArgs)
+		instruments, err := client.GetInstruments(ctx, *instrumentsArgs)
 		if err != nil {
 			return internal.ErrorCheck(err)
 		}
-		res := internal.FormatResult(owners, cmd.Flags())
+		res := internal.FormatResult(instruments, cmd.Flags())
 		fmt.Println(res)
 		return nil
 	},
 }
 
 var getCmd = &cobra.Command{
-	Use:   "get [ownersID]",
-	Short: "Get a single owner by owners ID",
-	Long:  `Get a single owner by owners ID`,
+	Use:   "get [instrumentsID]",
+	Short: "Get a single instrument by instruments ID",
+	Long:  `Get a single instrument by instruments ID`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		ownersID, err := strconv.ParseInt(args[0], 10, 64)
+		instrumentsID, err := strconv.ParseInt(args[0], 10, 64)
 		if err != nil {
 			panic(err)
 		}
@@ -97,11 +97,11 @@ var getCmd = &cobra.Command{
 			fmt.Println("cannot initialize client")
 		}
 		ctx := context.Background()
-		owner, err := client.GetOwner(ctx, ownersID)
+		instrument, err := client.GetInstrument(ctx, instrumentsID)
 		if err != nil {
 			panic(err)
 		}
-		res := internal.FormatResult(owner, cmd.Flags())
+		res := internal.FormatResult(instrument, cmd.Flags())
 		fmt.Println(res)
 	},
 }

@@ -13,11 +13,13 @@ import (
 	"github.com/spf13/pflag"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/openaq/openaq-cli/cmd/config"
 	"github.com/openaq/openaq-go"
 )
 
 var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "locations_count", "measurements_count", "providers_count"}
 var countriesMiniHeaders = []string{"countries_id", "iso_code", "name"}
+var instrumentsHeaders = []string{"id", "name", "isMonitor", "locationsCount"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
 var measurementsParametersHeaders = []string{"parameter_id", "parameter_name", "parameter_units", "parameter_display_name"}
 var measurementsPeriodHeaders = []string{"periodLabel", "periodInterval", "periodDatetimeFromUTC", "periodDatetimeFromLocal", "periodDatetimeToUTC", "periodDatetimeToLocal"}
@@ -25,6 +27,8 @@ var measurementsCoverageHeaders = []string{"expectedCount", "expectedInterval", 
 var measurementsSummaryHeaders = []string{"min", "q02", "q25", "median", "q75", "q98", "max", "sd"}
 var measurementsHeaders = appendMany([][]string{measurementsParametersHeaders, {"value"}, measurementsPeriodHeaders, measurementsCoverageHeaders, measurementsSummaryHeaders})
 var miniMeasurementsHeaders = []string{"parameter", "datetime_local", "datetime_utc", "period", "value"}
+var ownersHeaders = []string{"id", "name", "locationsCount"}
+var manufacturersHeaders = []string{"id", "name", "locationsCount"}
 var parametersHeaders = []string{"parameters_id", "name", "display_name", "units", "description", "locations_count", "measurements_count"}
 var providersHeaders = []string{"providers_id", "name", "source_name", "export_prefix", "license", "datetime_added", "datetime_first", "datetime_last", "locations_count", "measurements_count", "countries_count"}
 
@@ -33,7 +37,7 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 	csvFlag, _ := flags.GetBool("csv")
 	pretty, _ := flags.GetBool("pretty")
 	mini, _ := flags.GetBool("mini")
-	if csvFlag {
+	if csvFlag || (config.CSVConfig && !jsonFlag) {
 		var csvOut string
 		switch v := v.(type) {
 		case *openaq.LocationsResponse:
@@ -55,15 +59,23 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 			csvOut = writeParametersCSV(v, parametersHeaders)
 		case *openaq.ProvidersResponse:
 			csvOut = writeProvidersCSV(v, providersHeaders)
+
+		case *openaq.OwnersResponse:
+			csvOut = writeOwnersCSV(v, ownersHeaders)
+		case *openaq.ManufacturersResponse:
+			csvOut = writeManufacturersCSV(v, manufacturersHeaders)
+		case *openaq.InstrumentsResponse:
+			csvOut = writeInstrumentsCSV(v, instrumentsHeaders)
 		default:
 			fmt.Println("cannot find type")
 		}
+
 		return csvOut
 	}
-	if jsonFlag {
+	if jsonFlag || (config.JSONConfig && !csvFlag) {
 		var out []byte
 		var err error
-		if pretty {
+		if pretty || config.PrettyConfig {
 			out, err = jsoncolor.MarshalIndent(v, "", "   ")
 		} else {
 			out, err = json.Marshal(v)
@@ -88,10 +100,17 @@ func FormatResult(v interface{}, flags *pflag.FlagSet) string {
 		} else {
 			return writeCountriesTable(v, countriesHeaders)
 		}
+
+	case *openaq.OwnersResponse:
+		return writeOwnersTable(v, ownersHeaders)
+	case *openaq.ManufacturersResponse:
+		return writeManufacturersTable(v, manufacturersHeaders)
 	case *openaq.ParametersResponse:
 		return writeParametersTable(v, parametersHeaders)
 	case *openaq.ProvidersResponse:
 		return writeProvidersTable(v, providersHeaders)
+	case *openaq.InstrumentsResponse:
+		return writeInstrumentsTable(v, instrumentsHeaders)
 	default:
 		return ""
 	}
@@ -196,6 +215,106 @@ func writeMiniCountriesTable(countries *openaq.CountriesResponse, headers []stri
 	return tw.Render()
 }
 
+// instruments
+func writeInstrumentsTable(instruments *openaq.InstrumentsResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range instruments.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Name)
+		row = append(row, "") // placeholder s.IsMonitor
+		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
+		tw.AppendRow(row)
+	}
+	return tw.Render()
+}
+
+func writeInstrumentsCSV(data *openaq.InstrumentsResponse, headers []string) string {
+	var buffer bytes.Buffer
+	writer := csv.NewWriter(&buffer)
+
+	writer.Write(headers)
+
+	for _, s := range data.Results {
+		writer.Write([]string{
+			strconv.FormatInt(s.ID, 10),
+			s.Name,
+			strconv.FormatInt(s.LocationsCount, 10),
+		})
+	}
+
+	writer.Flush()
+	return buffer.String()
+}
+
+// owners
+func writeOwnersTable(owners *openaq.OwnersResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range owners.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Name)
+		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
+		tw.AppendRow(row)
+	}
+	return tw.Render()
+}
+
+func writeOwnersCSV(data *openaq.OwnersResponse, headers []string) string {
+	var buffer bytes.Buffer
+	writer := csv.NewWriter(&buffer)
+
+	writer.Write(headers)
+
+	for _, s := range data.Results {
+		writer.Write([]string{
+			strconv.FormatInt(s.ID, 10),
+			s.Name,
+			strconv.FormatInt(s.LocationsCount, 10),
+		})
+	}
+
+	writer.Flush()
+	return buffer.String()
+}
+
+// manufacturers
+func writeManufacturersTable(manufacturers *openaq.ManufacturersResponse, headers []string) string {
+	var columns = len(headers)
+	tw := table.NewWriter()
+	writeTableHeader(tw, headers)
+	for _, s := range manufacturers.Results {
+		row := make(table.Row, 0, columns)
+		row = append(row, strconv.FormatInt(s.ID, 10))
+		row = append(row, s.Name)
+		row = append(row, strconv.FormatInt(s.LocationsCount, 10))
+		tw.AppendRow(row)
+	}
+	return tw.Render()
+}
+
+func writeManufacturersCSV(data *openaq.ManufacturersResponse, headers []string) string {
+	var buffer bytes.Buffer
+	writer := csv.NewWriter(&buffer)
+
+	writer.Write(headers)
+
+	for _, s := range data.Results {
+		writer.Write([]string{
+			strconv.FormatInt(s.ID, 10),
+			s.Name,
+			strconv.FormatInt(s.LocationsCount, 10),
+		})
+	}
+
+	writer.Flush()
+	return buffer.String()
+}
+
 // parameters
 func writeParametersCSV(parameters *openaq.ParametersResponse, headers []string) string {
 
@@ -286,7 +405,7 @@ func writeParametersTable(countries *openaq.ParametersResponse, headers []string
 
 }
 
-// plocations
+// locations
 func writeLocationsCSV(locations *openaq.LocationsResponse, headers []string) string {
 
 	buf := new(bytes.Buffer)

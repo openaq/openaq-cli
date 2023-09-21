@@ -3,12 +3,12 @@ module github.com/openaq/openaq-cli
 go 1.21
 
 require (
+	github.com/fatih/color v1.15.0
 	github.com/nwidger/jsoncolor v0.3.2
 	github.com/spf13/viper v1.16.0
 )
 
 require (
-	github.com/fatih/color v1.15.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
@@ -23,7 +23,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.4.6
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/openaq/openaq-go v0.0.0-20230904223615-5231ec0c2ac4
+	github.com/openaq/openaq-go v0.0.0-20230919184435-19c42abe3cc4
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
