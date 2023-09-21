@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.0 - 2023-09-20
+
+* Add `openaq owners` resource commands resolved issue #36
+* Add `openaq manufacturers` commandresolved issue #35
+* Add `openaq instruments` command resolved issue #51
+* Adds functionality to see default format options in config yml
+* Changed `configure` command to `settings`
+
 ## v0.3.0 - 2023-09-13
 
 * Adds parameters to `countries list` table view resolved issue #32
