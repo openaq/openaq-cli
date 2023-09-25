@@ -44,3 +44,138 @@ builds:
 checksum:
   algorithm: sha256
   name_template: '{{ .ProjectName }}-{{ .Version }}-checksums.txt'
+
+# Homebrew
+brews:
+  - name: openaq
+    tap:
+      owner: openaq
+      name: openaq-cli  # repo to be referenced
+    ids:
+      - openaq
+      - air quality
+    goarm: 6
+    goamd64: v1
+    url_template: "https://github.com/openaq/openaq-cli/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    homepage: "https://openaq.org/openaq-cli"  
+    description: "Official Command Line Interface for OpenAQ."  
+    license: "MIT"
+    commit_author:
+      name: goreleaserbot
+      email: info@openaq.org
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    folder: Formula
+    repository:
+      owner: openaq
+      name: openaq-cli
+      branch: main
+      token: "{{ .Env.GITHUB_PERSONAL_AUTH_TOKEN }}"
+    install: |
+      bin.install "openaq"  # Replace "openaq" with the name of your binary if different
+
+
+# Scoop
+scoops:
+  - name: openaq # name the scoop package
+    url_template: "https://github.com/openaq/openaq-cli/releases/{{ .Tag }}/{{ .ArtifactName }}"
+    
+    commit_author:
+      name: openaqbot
+      email: bot@openaq.org
+
+    commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+
+    homepage: "https://github.com/openaq/openaq-cli"
+
+    description: "Official Command Line Interface for OpenAQ."
+
+    license: MIT  # ?
+
+    # executable name
+    shortcuts: [["openaq"]]
+
+    repository:
+      owner: openaq
+      name: scoop-openaq  # This is the repo where the scoop manifest will be stored.
+
+      branch: main
+
+      token: "{{ .Env.GITHUB_PERSONAL_AUTH_TOKEN }}" # needed?
+
+
+# Chocolatey
+chocolateys:
+  -
+    name: openaq
+    ids:
+      - openaq
+    owners: OpenAQ
+    title: OpenAQ CLI
+    authors: OpenAQ
+    project_url: https://github.com/openaq/openaq-cli
+    url_template: "https://github.com/openaq/openaq-cli/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    icon_url: 'https://github.com/openaq/openaq.org/blob/main/static/favicon-96x96.png'
+    copyright: 2023 OpenAQ
+    license_url: https://github.com/openaq/openaq-cli/blob/main/LICENSE
+    require_license_acceptance: false
+    project_source_url: https://github.com/openaq/openaq-cli
+    docs_url: https://github.com/openaq/openaq-cli/blob/main/README.md
+    bug_tracker_url: https://github.com/openaq/openaq-cli/issues
+    tags: "openaq, air quality, cli"
+    summary: Official Command Line Interface for OpenAQ.
+    description: |
+      OpenAQ CLI is the official command-line tool to interact with the OpenAQ platform.
+    release_notes: "https://github.com/openaq/openaq-cli/releases/tag/v{{ .Version }}"
+    api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
+    source_repo: "https://push.chocolatey.org/"
+    skip_publish: false
+
+# .goreleaser.yaml
+aurs:
+  -
+    name: openaq-cli-bin
+
+    homepage: "https://openaq.org/"
+
+    description: "A CLI tool for accessing the OpenAQ platform."
+
+    maintainers:
+      - 'OpenAQ dev@openaqa.org'
+
+    license: "MIT"  # Update with the appropriate license.
+
+    private_key: '{{ .Env.AUR_KEY }}'
+
+    git_url: 'ssh://aur@aur.archlinux.org/openaq-cli-bin.git'
+
+    skip_upload: false  # Update as per your needs.
+
+    provides:
+      - openaq-cli
+
+    conflicts:
+      - openaq-cli  # If there's any conflicting package, list it here.
+
+    depends:
+      - curl  # Update based on the dependencies of openaq-cli.
+      - other-dependencies  # If any.
+
+    optdepends:
+      - 'wget: for downloading things'  # Optional dependencies, update as per your needs.
+
+    package: |-
+      install -Dm755 "./openaq-cli" "${pkgdir}/usr/bin/openaq-cli"
+      # Add additional installation steps as needed.
+      # For instance, licenses, man pages, completions, etc.
+
+    commit_author:
+      name: goreleaserbot
+      email: dev@openaq.org
+
+    commit_msg_template: "pkgbuild updates for openaq-cli"
+
+    goamd64: v1  # Use v1 unless you're specifically targeting v2.
+
+    git_ssh_command: 'ssh -i {{ .Env.KEY }} -o SomeOption=yes'
+
+    url_template: "http://github.com/openaq/openaq-cli/releases/{{ .Tag }}/{{ .ArtifactName }}"  # Update the URL based on where the `openaq-cli` is hosted.
