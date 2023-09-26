@@ -50,13 +50,16 @@ brews:
   - repository:
       owner: openaq
       name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     folder: Formula
     goarm: "7"
     homepage: https://openaq.org
     description: Official Command Line Interface for OpenAQ.
     license: MIT
     test: |
-      system "#{bin}/goreleaser -v"
+      system "#{bin}/openaq-cli -v"
+
+
     # dependencies:
     #   - name: go
     #     type: optional
