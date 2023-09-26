@@ -81,23 +81,24 @@ scoops:
     license: MIT
 
 
-# winget:
-#   - name: openaq
-#     publisher: openaq
-#     license: MIT
-#     homepage: https://openaq.org
-#     short_description: Official Command Line Interface for OpenAQ.
-#     repository:
-#       owner: openaq
-#       name: winget-pkgs
-#       branch: "openaq-cli-{{.Version}}"
-#       pull_request:
-#         enabled: true
-#         draft: true
-#         base:
-#           owner: microsoft
-#           name: winget-pkgs
-#           branch: master
+winget:
+  - name: openaq
+    publisher: openaq
+    license: MIT
+    homepage: https://openaq.org
+    short_description: Official Command Line Interface for OpenAQ.
+    repository:
+      owner: openaq
+      name: winget-pkgs
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+      branch: "openaq-cli-{{.Version}}"
+      pull_request:
+        enabled: true
+        draft: true
+        base:
+          owner: microsoft
+          name: winget-pkgs
+          branch: master
 
 # aurs:
 #   - homepage: https://openaq.org
