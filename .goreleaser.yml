@@ -74,6 +74,7 @@ scoops:
   - repository:
       owner: openaq
       name: scoop-bucket
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     folder: bucket
     homepage: https://openaq.org
     description: Official Command Line Interface for OpenAQ.
