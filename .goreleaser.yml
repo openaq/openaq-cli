@@ -22,6 +22,7 @@ builds:
     goarch:
       - amd64
       - arm64
+      - 386
     goarm:
       - 6
       - 7
@@ -58,17 +59,11 @@ brews:
     license: MIT
     test: |
       system "#{bin}/openaq-cli -v"
-    # dependencies:
-    #   - name: go
-    #     type: optional
-    #   - name: git
-    # conflicts:
-    #   - goreleaser-pro
     # extra_install: |-
-    #   bash_completion.install "completions/goreleaser.bash" => "goreleaser"
-    #   zsh_completion.install "completions/goreleaser.zsh" => "_goreleaser"
-    #   fish_completion.install "completions/goreleaser.fish"
-    #   man1.install "manpages/goreleaser.1.gz"
+    #   bash_completion.install "completions/openaq.bash" => "openaq"
+    #   zsh_completion.install "completions/openaq.zsh" => "_openaq"
+    #   fish_completion.install "completions/openaq.fish"
+    #   man1.install "manpages/openaq.1.gz"
 
 scoops:
   - repository:
