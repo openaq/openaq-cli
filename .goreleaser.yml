@@ -107,7 +107,7 @@ winget:
       owner: openaq
       name: winget-pkgs
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
-      branch: "openaq-cli-{{.Version}}"
+      branch: main        # "openaq-cli-{{.Version}}"
       # pull_request: # create a PR for wingets main repo
       #   enabled: true
       #   draft: true
