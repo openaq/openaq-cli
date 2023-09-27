@@ -3,6 +3,14 @@
 
 A command line utility to interact with the OpenAQ API.
 
+  ___                      _    ___     ____ _     ___ 
+ / _ \ _ __   ___ _ __    / \  / _ \   / ___| |   |_ _|
+| | | | '_ \ / _ | '_ \  / _ \| | | | | |   | |    | | 
+| |_| | |_) |  __| | | |/ ___ | |_| | | |___| |___ | | 
+ \___/| .__/ \___|_| |_/_/   \_\__\_\  \____|_____|___|
+      |_|                                              
+
+
 ![parameters](https://github.com/openaq/openaq-cli/assets/8487728/07a860ee-31cf-4ee3-b52c-6146c9617536)
 
 ## Installation
