@@ -90,9 +90,9 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
-    builds_info:
-      group: root
-      owner: root
+    # builds_info:
+    #   group: root
+    #   owner: root
     files:
       - README.md
       - LICENSE.md
@@ -101,7 +101,7 @@ archives:
 
 # Chocolatey
 chocolateys:
-  -
+  - 
     name: openaq
     ids:
       - openaq-cli
