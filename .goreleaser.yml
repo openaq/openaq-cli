@@ -1,8 +1,8 @@
 # .goreleaser.yml
-# release:
-#   github:
-#     owner: openaq
-#     name: openaq-cli
+release:
+  github:
+    owner: openaq
+    name: openaq-cli
 
 snapshot:
   name_template: SNAPSHOT-{{ .Commit }}
@@ -22,7 +22,7 @@ builds:
     goarch:
       - amd64
       - arm64
-      - 386
+      # - 386
     goarm:
       - 6
       - 7
@@ -79,52 +79,52 @@ scoops:
     license: MIT
 
 # archives needed for winget & chocolatey
-archives:
-  - name_template: >-
-      {{- .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format_overrides:
-      - goos: windows
-        format: zip
+# archives:
+#   - name_template: >-
+#       {{- .ProjectName }}_
+#       {{- title .Os }}_
+#       {{- if eq .Arch "amd64" }}x86_64
+#       {{- else if eq .Arch "386" }}i386
+#       {{- else }}{{ .Arch }}{{ end }}
+#       {{- if .Arm }}v{{ .Arm }}{{ end -}}
+#     format_overrides:
+#       - goos: windows
+#         format: zip
     # builds_info:
     #   group: root
     #   owner: root
-    files:
-      - README.md
-      - LICENSE.md
+    # files:
+    #   - README.md
+    #   - LICENSE.md
       # - completions/*
       # - manpages/*
 
 # Chocolatey
-chocolateys:
-  - 
-    name: openaq
-    ids:
-      - openaq-cli
-    owners: OpenAQ
-    title: OpenAQ CLI
-    authors: OpenAQ
-    project_url: https://github.com/openaq/openaq-cli
-    url_template: "https://github.com/openaq/openaq-cli/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    icon_url: 'https://github.com/openaq/openaq.org/blob/main/static/favicon-96x96.png'
-    copyright: 2023 OpenAQ
-    license_url: https://github.com/openaq/openaq-cli/blob/main/LICENSE.md
-    require_license_acceptance: false
-    project_source_url: https://github.com/openaq/openaq-cli
-    docs_url: https://github.com/openaq/openaq-cli/blob/main/README.md
-    bug_tracker_url: https://github.com/openaq/openaq-cli/issues
-    tags: "openaq, air quality, cli"
-    summary: Official Command Line Interface for OpenAQ.
-    description: |
-      OpenAQ CLI is the official command-line tool to interact with the OpenAQ API. Get your API key here -> https://api.openaq.org/register
-    release_notes: "https://github.com/openaq/openaq-cli/releases/tag/v{{ .Version }}"
-    api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
-    source_repo: "https://push.chocolatey.org/"
-    skip_publish: false
+# chocolateys:
+#   - 
+#     name: openaq
+#     ids:
+#       - openaq-cli
+#     owners: OpenAQ
+#     title: OpenAQ CLI
+#     authors: OpenAQ
+#     project_url: https://github.com/openaq/openaq-cli
+#     url_template: "https://github.com/openaq/openaq-cli/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+#     icon_url: 'https://github.com/openaq/openaq.org/blob/main/static/favicon-96x96.png'
+#     copyright: 2023 OpenAQ
+#     license_url: https://github.com/openaq/openaq-cli/blob/main/LICENSE.md
+#     require_license_acceptance: false
+#     project_source_url: https://github.com/openaq/openaq-cli
+#     docs_url: https://github.com/openaq/openaq-cli/blob/main/README.md
+#     bug_tracker_url: https://github.com/openaq/openaq-cli/issues
+#     tags: "openaq, air quality, cli"
+#     summary: Official Command Line Interface for OpenAQ.
+#     description: |
+#       OpenAQ CLI is the official command-line tool to interact with the OpenAQ API. Get your API key here -> https://api.openaq.org/register
+#     release_notes: "https://github.com/openaq/openaq-cli/releases/tag/v{{ .Version }}"
+#     api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
+#     source_repo: "https://push.chocolatey.org/"
+#     skip_publish: false
 
 
 # winget:
