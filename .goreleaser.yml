@@ -78,6 +78,27 @@ scoops:
      Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
     license: MIT
 
+# archives needed for winget & chocolatey
+archives:
+  - name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    format_overrides:
+      - goos: windows
+        format: zip
+    builds_info:
+      group: root
+      owner: root
+    files:
+      - README.md
+      - LICENSE.md
+      - completions/*
+      - manpages/*
+
 # Chocolatey
 chocolateys:
   -
@@ -105,26 +126,6 @@ chocolateys:
     source_repo: "https://push.chocolatey.org/"
     skip_publish: false
 
-# archive needed for winget?
-# archives:
-#   - name_template: >-
-#       {{- .ProjectName }}_
-#       {{- title .Os }}_
-#       {{- if eq .Arch "amd64" }}x86_64
-#       {{- else if eq .Arch "386" }}i386
-#       {{- else }}{{ .Arch }}{{ end }}
-#       {{- if .Arm }}v{{ .Arm }}{{ end -}}
-#     format_overrides:
-#       - goos: windows
-#         format: zip
-#     builds_info:
-#       group: root
-#       owner: root
-#     files:
-#       - README.md
-#       - LICENSE.md
-#       - completions/*
-#       - manpages/*
 
 # winget:
 #   - name: openaq
