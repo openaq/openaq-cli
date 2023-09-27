@@ -96,8 +96,8 @@ archives:
     files:
       - README.md
       - LICENSE.md
-      - completions/*
-      - manpages/*
+      # - completions/*
+      # - manpages/*
 
 # Chocolatey
 chocolateys:
