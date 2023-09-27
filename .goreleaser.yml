@@ -46,26 +46,6 @@ checksum:
   algorithm: sha256
   name_template: '{{ .ProjectName }}-{{ .Version }}-checksums.txt'
 
-# archive needed for winget?
-archives:
-  - name_template: >-
-      {{- .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end -}}
-    format_overrides:
-      - goos: windows
-        format: zip
-    builds_info:
-      group: root
-      owner: root
-    files:
-      - README.md
-      - LICENSE.md
-      - completions/*
-      - manpages/*
 
 # Homebrew
 brews:
@@ -76,7 +56,7 @@ brews:
     folder: Formula
     goarm: "7"
     homepage: https://openaq.org
-    description: Official Command Line Interface for OpenAQ.
+    description: Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
     license: MIT
     test: |
       system "#{bin}/openaq-cli -v"
@@ -86,6 +66,7 @@ brews:
     #   fish_completion.install "completions/openaq.fish"
     #   man1.install "manpages/openaq.1.gz"
 
+
 scoops:
   - repository:
       owner: openaq
@@ -93,21 +74,69 @@ scoops:
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     folder: bucket
     homepage: https://openaq.org
-    description: Official Command Line Interface for OpenAQ.
+    description: |
+     Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
     license: MIT
 
+# Chocolatey
+chocolateys:
+  -
+    name: openaq
+    ids:
+      - openaq-cli
+    owners: OpenAQ
+    title: OpenAQ CLI
+    authors: OpenAQ
+    project_url: https://github.com/openaq/openaq-cli
+    url_template: "https://github.com/openaq/openaq-cli/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    icon_url: 'https://github.com/openaq/openaq.org/blob/main/static/favicon-96x96.png'
+    copyright: 2023 OpenAQ
+    license_url: https://github.com/openaq/openaq-cli/blob/main/LICENSE.md
+    require_license_acceptance: false
+    project_source_url: https://github.com/openaq/openaq-cli
+    docs_url: https://github.com/openaq/openaq-cli/blob/main/README.md
+    bug_tracker_url: https://github.com/openaq/openaq-cli/issues
+    tags: "openaq, air quality, cli"
+    summary: Official Command Line Interface for OpenAQ.
+    description: |
+      OpenAQ CLI is the official command-line tool to interact with the OpenAQ API. Get your API key here -> https://api.openaq.org/register
+    release_notes: "https://github.com/openaq/openaq-cli/releases/tag/v{{ .Version }}"
+    api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
+    source_repo: "https://push.chocolatey.org/"
+    skip_publish: false
 
-winget:
-  - name: openaq
-    publisher: openaq
-    license: MIT
-    homepage: https://openaq.org
-    short_description: Official Command Line Interface for OpenAQ.
-    repository:
-      owner: openaq
-      name: winget-pkgs
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
-      branch: main        # "openaq-cli-{{.Version}}"
+# archive needed for winget?
+# archives:
+#   - name_template: >-
+#       {{- .ProjectName }}_
+#       {{- title .Os }}_
+#       {{- if eq .Arch "amd64" }}x86_64
+#       {{- else if eq .Arch "386" }}i386
+#       {{- else }}{{ .Arch }}{{ end }}
+#       {{- if .Arm }}v{{ .Arm }}{{ end -}}
+#     format_overrides:
+#       - goos: windows
+#         format: zip
+#     builds_info:
+#       group: root
+#       owner: root
+#     files:
+#       - README.md
+#       - LICENSE.md
+#       - completions/*
+#       - manpages/*
+
+# winget:
+#   - name: openaq
+#     publisher: openaq
+#     license: MIT
+#     homepage: https://openaq.org
+#     short_description: Official Command Line Interface for OpenAQ.
+#     repository:
+#       owner: openaq
+#       name: winget-pkgs
+#       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+#       branch: main        # "openaq-cli-{{.Version}}"
       # pull_request: # create a PR for wingets main repo
       #   enabled: true
       #   draft: true
