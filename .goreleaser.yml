@@ -54,7 +54,7 @@ brews:
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     folder: Formula
     goarm: "7"
-    homepage: https://openaq.org
+    homepage: https://github.com/openaq/openaq-cli
     description: Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
     license: MIT
     test: |
@@ -67,7 +67,7 @@ scoops:
       name: scoop-bucket
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     folder: bucket
-    homepage: https://openaq.org
+    homepage: https://github.com/openaq/openaq-cli
     description: |
      Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
     license: MIT
