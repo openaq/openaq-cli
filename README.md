@@ -11,7 +11,8 @@ A command line utility to interact with the OpenAQ API.
       |_|                                              
 ```
 
-![parameters](https://github.com/openaq/openaq-cli/assets/8487728/07a860ee-31cf-4ee3-b52c-6146c9617536)
+![parameters](https://github.com/openaq/openaq-cli/assets/8487728/eab61dc9-a493-49c3-8c8f-cf5497f13f87)
+
 
 ## Installation methods
 
