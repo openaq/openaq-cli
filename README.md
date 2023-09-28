@@ -5,10 +5,64 @@ A command line utility to interact with the OpenAQ API.
 
 ![parameters](https://github.com/openaq/openaq-cli/assets/8487728/07a860ee-31cf-4ee3-b52c-6146c9617536)
 
-## Installation
+## Installation methods
 
 > The OpenAQ CLI tool is still a *work in progress* and may be unstable until a 1.0 release. 
 
+
+### Homebrew Installation (Recommended for macOS and Linux users):
+
+**What is Homebrew?**  
+[Homebrew](https://brew.sh/) is a popular package manager for macOS that allows users to easily install software and tools directly from the command line. It's known for its simplicity and vast library of available packages. Homebrew has also been extended to work on Linux.
+
+**Who should use Homebrew?**  
+If you're on macOS or Linux and prefer a straightforward command-line installation method, Homebrew is an excellent choice. It handles dependencies, updates, and uninstallation seamlessly.
+
+**Steps to Install via Homebrew**:
+
+1. **Add tap**  
+   This step adds the OpenAQ repository to Homebrew, making the tool available for installation.
+
+    ```bash
+    brew tap openaq/homebrew-tap
+    ```
+
+2. **Install**  
+   This command installs the OpenAQ CLI tool.
+
+    ```bash
+    brew install openaq-cli
+    ```
+
+---
+
+### Scoop Installation (Recommended for Windows users):
+
+**What is Scoop?**  
+[Scoop](https://scoop.sh/) is a command-line installer for Windows. It's designed to allow users to install software without the usual Windows GUI and without needing administrative permissions.
+
+**Who should use Scoop?**  
+Windows users who are comfortable with the command line and desire easy installation of software on their system.
+
+**Steps to Install via Scoop**:
+
+1. **Add scoop bucket**  
+   Buckets in Scoop are similar to taps in Homebrew. By adding a bucket, you're telling Scoop where to find the software you want to install.
+
+    ```bash
+    scoop bucket add openaq-bucket https://github.com/openaq/scoop-bucket
+    ```
+
+2. **Install**  
+   This command installs the OpenAQ CLI tool on your Windows machine.
+
+    ```bash
+    scoop install openaq-cli
+    ```
+
+---
+
+### Manual Installation
 Compiled executables for Windows, Mac, Linux are available for download in the releases page: 
 https://github.com/openaq/openaq-cli/releases/
 
@@ -21,34 +75,6 @@ Alternatively you can install with Golang > 1.18 with:
 ```
 go install github.com/openaq/openaq-cli
 ```
-
-Homebrew Installation: 
-
-- **Add tap**
-
-    ```bash
-    brew tap openaq/homebrew-tap
-    ```
-
-- **Install**
-
-    ```bash
-    brew install openaq-cli
-    ```
-
-Scoop installation:
-
-- **Add scoop bucket**
-
-    ```bash
-    scoop bucket add openaq-bucket https://github.com/openaq/scoop-bucket
-    ```
-
-- **Install**
-
-    ```bash
-    scoop install openaq-cli
-    ```
 
 ## Usage
 
