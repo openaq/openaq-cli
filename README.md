@@ -22,7 +22,33 @@ Alternatively you can install with Golang > 1.18 with:
 go install github.com/openaq/openaq-cli
 ```
 
+Homebrew Installation: 
 
+- **Add tap**
+
+    ```bash
+    brew tap openaq/homebrew-tap
+    ```
+
+- **Install**
+
+    ```bash
+    brew install openaq-cli
+    ```
+
+Scoop installation:
+
+- **Add scoop bucket**
+
+    ```bash
+    scoop bucket add openaq-bucket https://github.com/openaq/scoop-bucket
+    ```
+
+- **Install**
+
+    ```bash
+    scoop install openaq-cli
+    ```
 
 ## Usage
 
