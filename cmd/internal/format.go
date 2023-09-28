@@ -17,7 +17,7 @@ import (
 	"github.com/openaq/openaq-go"
 )
 
-var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters", "providers_count"}
+var countriesHeaders = []string{"countries_id", "iso_code", "name", "datetime_first", "datetime_last", "parameters"}
 var countriesMiniHeaders = []string{"countries_id", "iso_code", "name"}
 var instrumentsHeaders = []string{"id", "name", "isMonitor"}
 var locationsHeaders = []string{"locations_id", "name", "countries_id", "country_iso", "country_name", "latitude", "longitude"}
@@ -141,7 +141,6 @@ func writeCountriesCSV(countries *openaq.CountriesResponse, headers []string) st
 		record = append(record, s.DatetimeFirst.Format(time.RFC3339))
 		record = append(record, s.DatetimeLast.Format(time.RFC3339))
 		record = append(record, "")
-		record = append(record, strconv.FormatInt(s.ProvidersCount, 10))
 		w.Write(record)
 
 	}
@@ -180,7 +179,6 @@ func writeCountriesTable(countries *openaq.CountriesResponse, headers []string) 
 		row = append(row, s.DatetimeFirst.Format(time.RFC3339))
 		row = append(row, s.DatetimeLast.Format(time.RFC3339))
 		row = append(row, joinParamDisplayNames(s.Parameters))
-		row = append(row, strconv.FormatInt(s.ProvidersCount, 10))
 		tw.AppendRow(row)
 	}
 	return tw.Render()
