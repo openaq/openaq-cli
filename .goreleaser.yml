@@ -44,3 +44,30 @@ builds:
 checksum:
   algorithm: sha256
   name_template: '{{ .ProjectName }}-{{ .Version }}-checksums.txt'
+
+
+# Homebrew
+brews:
+  - repository:
+      owner: openaq
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    folder: Formula
+    goarm: "7"
+    homepage: https://github.com/openaq/openaq-cli
+    description: Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
+    license: MIT
+    test: |
+      system "#{bin}/openaq-cli -v"
+
+# Scoop
+scoops:
+  - repository:
+      owner: openaq
+      name: scoop-bucket
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    folder: bucket
+    homepage: https://github.com/openaq/openaq-cli
+    description: |
+     Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
+    license: MIT
