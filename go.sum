@@ -168,6 +168,10 @@ github.com/openaq/openaq-go v0.0.0-20230919184435-19c42abe3cc4 h1:QSawIaTtUDlmBP
 github.com/openaq/openaq-go v0.0.0-20230919184435-19c42abe3cc4/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
 github.com/openaq/openaq-go v0.0.0-20230926231932-f87ed12a8d7c h1:gepPxz2o+TPqLCn8+7kqaFR3WvugiR0gIZVL/jvu5Gk=
 github.com/openaq/openaq-go v0.0.0-20230926231932-f87ed12a8d7c/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
+github.com/openaq/openaq-go v0.0.0-20230927202805-b4ad0341266c h1:I0At/XDf6ZVFR1bt2e/6ZGimqtTe0QDn4DyrpnI5+ZM=
+github.com/openaq/openaq-go v0.0.0-20230927202805-b4ad0341266c/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
+github.com/openaq/openaq-go v0.0.0-20230928175700-6c70f3819e8c h1:WBeA0SPunDwd57kQSuHB8I6KdWjGS++YT0y4zcOWvcc=
+github.com/openaq/openaq-go v0.0.0-20230928175700-6c70f3819e8c/go.mod h1:Q9olP5bXBProrCmoro2Ovlcl19KoHUL4I03nnHD3ycc=
 github.com/pelletier/go-toml/v2 v2.0.8 h1:0ctb6s9mE31h0/lhu+J6OPmVeDxJn+kYnJc2jZR9tGQ=
 github.com/pelletier/go-toml/v2 v2.0.8/go.mod h1:vuYfssBdrU2XDZ9bYydBu6t+6a6PYNcZljzZR9VXg+4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
