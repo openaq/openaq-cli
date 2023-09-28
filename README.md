@@ -53,15 +53,23 @@ If you're on macOS or Linux and prefer a straightforward command-line installati
 **Who should use Scoop?**  
 Windows users who are comfortable with the command line and desire easy installation of software on their system.
 
-**Steps to Install via Scoop**:
+**Steps to Install via Scoop**:  
 
+*You must use PowerShell when installing with Scoop*
+
+1. **Ensure git is installed**  
+    `git` is a dependancy of the `openaq-cli` package
+    ```bash
+    scoop install git
+    ```
+    
 1. **Add scoop bucket**  
    Buckets in Scoop are similar to taps in Homebrew. By adding a bucket, you're telling Scoop where to find the software you want to install.
 
     ```bash
     scoop bucket add openaq-bucket https://github.com/openaq/scoop-bucket
     ```
-
+    
 2. **Install**  
    This command installs the OpenAQ CLI tool on your Windows machine.
 
