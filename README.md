@@ -64,14 +64,14 @@ Windows users who are comfortable with the command line and desire easy installa
     ```
     
 1. **Add scoop bucket**  
-   Buckets in Scoop are similar to taps in Homebrew. By adding a bucket, you're telling Scoop where to find the software you want to install.
+   By adding a bucket, you're telling Scoop where to find the software you want to install.
 
     ```bash
     scoop bucket add openaq-bucket https://github.com/openaq/scoop-bucket
     ```
     
 2. **Install**  
-   This command installs the OpenAQ CLI tool on your Windows machine.
+   This command installs the OpenAQ CLI tool on your Windows machine and will make it available to your system PATH.
 
     ```bash
     scoop install openaq-cli
@@ -80,7 +80,7 @@ Windows users who are comfortable with the command line and desire easy installa
 ---
 
 ### Manual Installation
-Compiled executables for Windows, Mac, Linux are available for download in the releases page: 
+Compiled executables for Windows, Mac, Linux are also available for download in the releases page: 
 https://github.com/openaq/openaq-cli/releases/
 
 After downloading place the exectuable where you keep exectuables and update you system `$PATH` variable to make the executable discoverable by your shell.
