@@ -58,7 +58,7 @@ Windows users who are comfortable with the command line and desire easy installa
 *You must use PowerShell when installing with Scoop*
 
 1. **Ensure git is installed**  
-    `git` is a dependancy of the `openaq-cli` package
+    `git` is required to install scoop buckets
     ```bash
     scoop install git
     ```
