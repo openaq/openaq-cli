@@ -67,6 +67,8 @@ scoops:
       name: scoop-bucket
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     folder: bucket
+    shortcuts: [["openaq.exe", "openaq"]]
+    depends: ["git"]
     homepage: https://github.com/openaq/openaq-cli
     description: |
      Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
