@@ -6,18 +6,17 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'OpenAQ CLI',
-			favicon: '/images/favicon.svg',
+			favicon: '/favicon.svg',
 			  head: [
-    // Add ICO favicon fallback for Safari.
-    {
-      tag: 'link',
-      attrs: {
-        rel: 'icon',
-        href:'/images/favicon.ico',
-        sizes: '32x32',
-      },
-    },
-  ],
+				{
+				tag: 'link',
+				attrs: {
+					rel: 'icon',
+					href:'/favicon.ico',
+					sizes: '32x32',"128x128","180x180","192x192"
+				},
+				},
+			],
 			logo: {
 				light: './src/assets/logo-light.svg',
 				dark: './src/assets/logo-dark.svg',
