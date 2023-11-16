@@ -1,0 +1,51 @@
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+
+// https://astro.build/config
+export default defineConfig({
+	integrations: [
+		starlight({
+			title: 'OpenAQ CLI',
+			favicon: '/images/favicon.svg',
+			  head: [
+    // Add ICO favicon fallback for Safari.
+    {
+      tag: 'link',
+      attrs: {
+        rel: 'icon',
+        href:'/images/favicon.ico',
+        sizes: '32x32',
+      },
+    },
+  ],
+			logo: {
+				light: './src/assets/logo-light.svg',
+				dark: './src/assets/logo-dark.svg',
+			},
+			customCss: [
+				'./src/styles/openaq.css',
+			],
+			social: {
+				github: 'https://github.com/openaq/openaq-cli',
+			},
+			sidebar: [
+				{
+					label: 'Start here',
+					autogenerate: { directory: 'guides' },
+
+				},
+				{
+					label: 'How-to guides',
+					autogenerate: { directory: 'how-to' },
+				},
+				{
+					label: 'Reference',
+					autogenerate: { directory: 'reference' },
+				},
+			],
+			components: {
+				Hero: './src/components/Hero.astro',
+			},
+		}),
+	],
+});
