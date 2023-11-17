@@ -96,24 +96,3 @@ openaq settings set api-key my-super-secret-openaq-api-key-1234-5678
 
 replacing `my-super-secret-openaq-api-key-1234-5678` with your API Key
 
-
-### Global flags
-
-`--config` `-c` — Manually set a configuration TOML file, default is $HOME/.openaq.toml
-
-`--help` `-h` — returns helps for any command
-
-### Resource flags 
-
-`--json` - Returns data as JSON instead of the default table view.
-
-`--pretty` - Only used in combination with `--json`. Provides a "pretty" indented and syntax highlighted view of the JSON output
-
-`--csv` - Returns the result as a csv (comma separated values).
-
-
-_the following only work on resource `list` calls_
-
-`--limit` - takes an integer to limit the number of results to return.
-
-`--page` - takes an integer to set the page number for API pagination
