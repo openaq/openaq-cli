@@ -11,7 +11,7 @@ This tutorial provides a practical example of using OpenAQ CLI. We will identify
 
 **Construct the Command:**
    - Use the `openaq locations list` command with `--bbox` for the bounding box:  
-   - 
+  
      ```
      openaq locations list --bbox -106.6,31.6,-106.2,31.9 
      ```
