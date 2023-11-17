@@ -8,6 +8,7 @@ openaq providers list
 ```
 
 Provides a list of providers.
+ 
 ------
 ```sh
 openaq parameters get [parametersID] 
