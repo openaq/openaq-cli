@@ -13,7 +13,7 @@ export default defineConfig({
 				attrs: {
 					rel: 'icon',
 					href:'/favicon.ico',
-					sizes: '32x32',"128x128","180x180","192x192"
+					sizes: '32x32'
 				},
 				},
 			],
