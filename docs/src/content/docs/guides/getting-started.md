@@ -96,3 +96,30 @@ openaq settings set api-key my-super-secret-openaq-api-key-1234-5678
 
 replacing `my-super-secret-openaq-api-key-1234-5678` with your API Key
 
+## Test your installation
+
+To test your installation run:
+
+```sh
+openaq about
+```
+
+This will print the OpenAQ CLI version and a short description of the tool.
+
+```sh
+  ___                      _    ___     ____ _     ___ 
+ / _ \ _ __   ___ _ __    / \  / _ \   / ___| |   |_ _|
+| | | | '_ \ / _ | '_ \  / _ \| | | | | |   | |    | | 
+| |_| | |_) |  __| | | |/ ___ | |_| | | |___| |___ | | 
+ \___/| .__/ \___|_| |_/_/   \_\__\_\  \____|_____|___|
+      |_|                                              
+
+The OpenAQ CLI is a command line interface tool to access the OpenAQ API.
+
+The source code is open source and available on github at:
+
+https://github.com/openaq/openaq-cli
+
+```
+
+You did it! You've successfully installed the OpenAQ CLI tool.

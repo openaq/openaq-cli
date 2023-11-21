@@ -20,7 +20,7 @@ This tutorial provides a practical example of using OpenAQ CLI. We will identify
    - Note down the `LOCATIONS_ID` column. Lets use ID `1089` to get measurements for the Ivanhoe C414 location.  
 
 
-   ```bash
+   ```sh
 +--------------+-------------------------------------------------+--------------+-------------+--------------------------+-----------+-------------+
 | LOCATIONS_ID | NAME                                            | COUNTRIES_ID | COUNTRY_ISO | COUNTRY_NAME             | LATITUDE  | LONGITUDE   |
 +--------------+-------------------------------------------------+--------------+-------------+--------------------------+-----------+-------------+
