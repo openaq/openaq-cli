@@ -55,7 +55,7 @@ brews:
     folder: Formula
     goarm: "7"
     homepage: https://github.com/openaq/openaq-cli
-    description: Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
+    description: Official Command Line Interface for OpenAQ. Get your API key here -> http://explore.openaq.org/register
     license: MIT
     test: |
       system "#{bin}/openaq-cli -v"
@@ -69,5 +69,5 @@ scoops:
     folder: bucket
     homepage: https://github.com/openaq/openaq-cli
     description: |
-     Official Command Line Interface for OpenAQ. Get your API key here -> https://api.openaq.org/register
+     Official Command Line Interface for OpenAQ. Get your API key here -> http://explore.openaq.org/register
     license: MIT
