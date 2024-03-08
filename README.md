@@ -95,7 +95,7 @@ go install github.com/openaq/openaq-cli
 
 ## Usage
 
-> Note: An OpenAQ API Key is required to use the OpenAQ CLI. Registering for an API Key is free and only requires a valid email address. Register at https://api.openaq.org/register
+> Note: An OpenAQ API Key is required to use the OpenAQ CLI. Registering for an API Key is free and only requires a valid email address. Register at http://explore.openaq.org/register
 
 
 To set your API Key run: 
