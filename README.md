@@ -1,6 +1,12 @@
 
 # OpenAQ API Command Line Client
 
+[![Project Status: Suspended – Initial development has started, but there has not yet been a stable, usable release; work has been stopped for the time being but the author(s) intend on resuming work.](https://www.repostatus.org/badges/latest/suspended.svg)](https://www.repostatus.org/#suspended)
+
+Development on this tool has been suspended. Usage is not recommended.
+
+
+
 A command line utility to interact with the OpenAQ API.
 ```
   ___                      _    ___     ____ _     ___ 
